@@ -1,0 +1,49 @@
+﻿@model IEnumerable<godTierCapstoneASP.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.creationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isOpen)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.creationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isOpen)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                <a asp-action="CompletePost" asp-route-id="@item.id">Accept this post</a>
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
