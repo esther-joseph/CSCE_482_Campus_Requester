@@ -95,7 +95,7 @@ namespace godTierCapstoneASP.Controllers
             }
 
             var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(p => p.id == id);
             if (post == null)
             {
                 return NotFound();
@@ -112,7 +112,7 @@ namespace godTierCapstoneASP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,details,creationTime,isOpen")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("id,details")] Post post)
         {
             if (id != post.id)
             {
@@ -123,6 +123,9 @@ namespace godTierCapstoneASP.Controllers
             {
                 try
                 {
+                    string newDetails = post.details;
+                    post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
+                    post.details = newDetails;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
