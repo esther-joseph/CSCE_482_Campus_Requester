@@ -5,7 +5,7 @@ import 'package:requester/pages/create_request.dart';
 
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/home',
+  initialRoute: '/',
   routes: {
     '/' : (context) => Loading(),
     '/home' : (context) => Home(),
