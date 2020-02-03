@@ -1,1 +1,0 @@
-This directory is for SQL stored procedures. Although procedures are already stored on the server, we will keep them here as well so we can revert to older versions
