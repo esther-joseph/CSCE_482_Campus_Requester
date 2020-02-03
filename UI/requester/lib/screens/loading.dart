@@ -13,7 +13,7 @@ class _LoadingState extends State<Loading> {
 
       Response response = await get('https://godtiercapstoneasp.azurewebsites.net/Posts/ViewRecentPosts');
       List<dynamic> data = jsonDecode(response.body);
-      print(data[0]);
+      print(data);
 
     //simulate network request for a requests
 

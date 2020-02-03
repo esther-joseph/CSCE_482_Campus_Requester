@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:requester/pages/home.dart';
-import 'package:requester/pages/loading.dart';
-import 'package:requester/pages/create_request.dart';
+import 'package:requester/screens/home.dart';
+import 'package:requester/screens/loading.dart';
+import 'package:requester/screens/create_request.dart';
 
 
 void main() => runApp(MaterialApp(
