@@ -5,7 +5,7 @@ import 'package:requester/screens/create_request.dart';
 
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/',
+  initialRoute: '/home',
   routes: {
     '/' : (context) => Loading(),
     '/home' : (context) => Home(),

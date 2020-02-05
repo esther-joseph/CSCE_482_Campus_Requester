@@ -29,8 +29,14 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Loading screen')
-      
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            // the request list
+          },
+          child: Text('Requester'),
+        ),
+      ),
     );
   }
 }
