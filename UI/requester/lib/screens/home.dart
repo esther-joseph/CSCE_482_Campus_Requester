@@ -10,7 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // Map data;
   List userData;
 
   @override
@@ -19,7 +18,6 @@ class _HomeState extends State<Home> {
     getData();
   }
   Future getData() async {
-    // var response = await http.get(
     http.Response response = await http.get('https://godtiercapstoneasp.azurewebsites.net/Posts/ViewRecentPosts');
 
     print(response.body);
@@ -28,15 +26,6 @@ class _HomeState extends State<Home> {
       userData = json.decode(response.body);
     });
   }
-  // Future<String> getData() async {
-  //   http.Response response = await http.get();
-  //   data = json.decode(response.body);
-  //   setState(() {
-  //     userData = data["data"];
-  //   });
-  //     // List<dynamic> data = jsonDecode(response.body);
-  //     // print(data);
-  // }
 
   @override
   Widget build(BuildContext context) {
