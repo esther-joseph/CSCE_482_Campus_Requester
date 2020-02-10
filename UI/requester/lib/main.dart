@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './providers/Boards.dart';
 import 'package:requester/screens/board_list_screen.dart';
 import './screens/add_board_screen.dart';
+import './screens/auth-screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.indigo,
           accentColor: Colors.amber,
         ),
-        home: BoardListScreen(),
+        home: AuthScreen(),
         routes: {
           AddBoardScreen.routeName: (ctx) => AddBoardScreen(),
+          AuthScreen.routeName: (ctx) => AuthScreen(),
         },
       ),
     );
