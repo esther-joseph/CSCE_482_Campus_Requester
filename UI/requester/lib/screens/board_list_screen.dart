@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './add_board_screen.dart';
+
 class BoardListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,11 +11,13 @@ class BoardListScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddBoardScreen.routeName);
+            },
           )
         ],
       ),
-      body: CircularProgressIndicator(),
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
