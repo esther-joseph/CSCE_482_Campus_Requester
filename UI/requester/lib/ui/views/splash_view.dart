@@ -16,6 +16,7 @@ class SplashView extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 100,
+                //TODO Have to chage the image
                 child: Image.asset('assets/images/icon_large.png'),
               ),
               CircularProgressIndicator(
