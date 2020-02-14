@@ -17,8 +17,7 @@ class AuthenticationService {
       @required String password,
       @required String confirm}) async {
     try {
-      //var user = await signIn(email, password)
-
+      //var user = await signUp(email, password, confirm)
       //return user != null;
     } catch (e) {
       return e.message;
