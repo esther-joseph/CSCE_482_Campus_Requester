@@ -25,6 +25,7 @@ class LoginView extends StatelessWidget {
               children: <Widget>[
                 SizedBox(
                   height: 150,
+                  //TODO Have to add Icon on the images folder
                   child: Image.asset('assets/images/title.png'),
                 ),
                 InputField(

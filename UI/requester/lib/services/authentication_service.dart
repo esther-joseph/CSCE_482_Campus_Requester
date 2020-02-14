@@ -23,4 +23,10 @@ class AuthenticationService {
       return e.message;
     }
   }
+
+  Future<bool> isUserLoggedIn() async {
+    //var user = await getCurrentUser();
+    //return user != null;
+    return false;
+  }
 }
