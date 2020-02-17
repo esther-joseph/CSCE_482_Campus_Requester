@@ -39,4 +39,8 @@ class LoginViewModel extends BaseModel {
           title: 'Sign In Failure', description: result);
     }
   }
+
+  void navigateToSignUp() {
+    _navigationService.navigateTo(SignUpViewRoute);
+  }
 }
