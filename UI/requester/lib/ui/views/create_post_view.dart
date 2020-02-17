@@ -7,6 +7,7 @@ import 'package:requester/viewmodels/create_post_view.model.dart';
 
 class CreatePostView extends StatelessWidget {
   final titleController = TextEditingController();
+  final descriptionControlloer = TextEditingController();
 
   CreatePostView({Key key}) : super(key: key);
 
@@ -23,7 +24,9 @@ class CreatePostView extends StatelessWidget {
                 ),
           onPressed: () {
             if (!model.busy) {
-              model.addPost(title: titleController.text);
+              model.addPost(
+                  title: titleController.text,
+                  description: descriptionControlloer.text);
             }
           },
           backgroundColor:
@@ -44,11 +47,15 @@ class CreatePostView extends StatelessWidget {
                 placeholder: 'Title',
                 controller: titleController,
               ),
+              InputField(
+                placeholder: 'Description',
+                controller: descriptionControlloer,
+              ),
               verticalSpaceMedium,
               Text('Post Image'),
               verticalSpaceSmall,
               Container(
-                height: 250,
+                height: 200,
                 decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10)),

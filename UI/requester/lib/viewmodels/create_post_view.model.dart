@@ -12,10 +12,11 @@ class CreatePostViewModel extends BaseModel {
   final DialogService _dialgService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
-  Future addPost({@required String title}) async {
+  Future addPost({@required String title, @required String description}) async {
     setBusy(true);
 
-    var result = await _apiService.addPost(Post(title: title));
+    var result =
+        await _apiService.addPost(Post(title: title, description: description));
     setBusy(false);
 
     if (result is String) {
