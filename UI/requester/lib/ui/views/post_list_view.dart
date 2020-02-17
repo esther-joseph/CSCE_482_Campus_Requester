@@ -3,15 +3,16 @@ import 'package:requester/ui/shared/ui_helpers.dart';
 import 'package:requester/ui/widgets/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-import 'package:requester/viewmodels/posts_view_model.dart';
+import 'package:requester/viewmodels/post_list_view_model.dart';
 
-class Posts_view extends StatelessWidget {
-  const Posts_view({Key key}) : super(key: key);
+class PostListView extends StatelessWidget {
+  const PostListView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<PostsViewModel>.withConsumer(
-        viewModel: PostsViewModel(),
+    return ViewModelProvider<PostListViewModel>.withConsumer(
+        viewModel: PostListViewModel(),
+        //onModelReady: (model) => model.fetchPosts(),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Colors.white,
               floatingActionButton: FloatingActionButton(
@@ -36,12 +37,26 @@ class Posts_view extends StatelessWidget {
                       ],
                     ),
                     Expanded(
+                        /*
+                          child: model.posts != null
+                            ? ListView.builder(
+                                itemCount: model.posts.length,
+                                itemBuilder: (context, index) =>
+                                    PostItem(post: model.posts[index]),
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation(
+                                      Theme.of(context).primaryColor),
+                                ),
+                              )
+                            */
+
                         child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) => PostItem(
-                        post: Post(title: '$index Title'),
-                      ),
-                    ))
+                            itemCount: 3,
+                            itemBuilder: (context, index) => PostItem(
+                                  post: Post(title: '$index Title'),
+                                )))
                   ],
                 ),
               ),

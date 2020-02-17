@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
 import 'package:requester/ui/widgets/input_field.dart';
-import 'package:requester/viewmodels/create_post_view.model.dart';
+import 'package:requester/viewmodels/create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
   final titleController = TextEditingController();
