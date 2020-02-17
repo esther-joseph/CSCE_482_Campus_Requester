@@ -52,7 +52,7 @@ namespace godTierCapstoneASP.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,details,creationTime,isOpen")] Post post)
         {
             if (ModelState.IsValid)
@@ -81,9 +81,9 @@ namespace godTierCapstoneASP.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> ViewRecentPosts(int count=50)
+        public JsonResult ViewRecentPosts(int count=50)
         {
-            return Json(_context.Posts.Where(p => p.isOpen == true).OrderByDescending(p => p.id));
+            return Json(_context.Posts.Where(p => p.isOpen == true).OrderByDescending(p => p.id).Take(count));
         }
 
         [HttpGet]
@@ -111,7 +111,7 @@ namespace godTierCapstoneASP.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,details")] Post post)
         {
             if (id != post.id)
@@ -165,7 +165,7 @@ namespace godTierCapstoneASP.Controllers
 
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.FindAsync(id);
