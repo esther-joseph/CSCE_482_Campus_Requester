@@ -1,10 +1,9 @@
-import 'package:requester/ui/views/home_view.dart';
-import 'package:requester/ui/views/post_list_view.dart';
-import 'package:requester/ui/views/signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/services/dialog_service.dart';
+import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/views/login_view.dart';
+import 'package:requester/ui/views/post_list_view.dart';
 import 'package:requester/ui/views/splash_view.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
@@ -33,7 +32,8 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-      home: HomeView(),
+
+      home: CreatePostView(),
       onGenerateRoute: generateRoute,
     );
   }
