@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BaseWidget<T extends ChangeNotifier> extends StatefulWidget {
+  
   final Widget Function(BuildContext context, T model, Widget child) builder;
   final Function(T) onModelReady;
   final T model;
