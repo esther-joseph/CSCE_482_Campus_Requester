@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
-  const PostItem({Key key, this.post}) : super(key: key);
+  bool isExpanded;
+
+  PostItem({Key key, this.post, this.isExpanded: false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class PostItem extends StatelessWidget {
           Expanded(
               child: Padding(
             padding: const EdgeInsets.only(left: 15.0),
-            child: Text(post.title),
+            child: Text(post.item),
           )),
           IconButton(
             icon: Icon(Icons.close),
