@@ -30,6 +30,7 @@ dependencies:
   # provider architecture
   provider_architecture: ^1.0.3
   intl: ^0.16.1
+  flutter_datetime_picker: ^1.3.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

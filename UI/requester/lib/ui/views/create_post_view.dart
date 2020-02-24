@@ -4,34 +4,43 @@ import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
 import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/viewmodels/create_post_view_model.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-class CreatePostView extends StatelessWidget {
+class CreatePostView extends StatefulWidget {
+  @override
+  _CreatePostViewState createState() => _CreatePostViewState();
+}
+
+class _CreatePostViewState extends State<CreatePostView> {
   final itemController = TextEditingController();
+  final serviceFeeController = TextEditingController();
+  final subTotalFeeController = TextEditingController();
+
   final serviceFeeControlloer = TextEditingController();
 
-  CreatePostView({Key key}) : super(key: key);
+  String _time = "Not set";
 
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<CreatePostViewModel>.withConsumer(
       viewModel: CreatePostViewModel(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: !model.busy
-              ? Icon(Icons.add)
-              : CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.white),
-                ),
-          onPressed: () {
-            if (!model.busy) {
-              model.addPost(
-                  item: itemController.text,
-                  serviceFee: serviceFeeControlloer.text);
-            }
-          },
-          backgroundColor:
-              !model.busy ? Theme.of(context).primaryColor : Colors.grey[600],
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   child: !model.busy
+        //       ? Icon(Icons.add)
+        //       : CircularProgressIndicator(
+        //           valueColor: AlwaysStoppedAnimation(Colors.white),
+        //         ),
+        //   onPressed: () {
+        //     if (!model.busy) {
+        //       model.addPost(
+        //           item: itemController.text,
+        //           serviceFee: serviceFeeControlloer.text);
+        //     }
+        //   },
+        //   backgroundColor:
+        //       !model.busy ? Theme.of(context).primaryColor : Colors.grey[600],
+        // ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
@@ -44,25 +53,90 @@ class CreatePostView extends StatelessWidget {
               ),
               verticalSpaceMedium,
               InputField(
-                placeholder: 'Title',
+                placeholder: 'Item',
                 controller: itemController,
               ),
-              InputField(
-                placeholder: 'Description',
-                controller: serviceFeeControlloer,
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                elevation: 4.0,
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      minTime: DateTime.now(),
+                      theme: DatePickerTheme(
+                        containerHeight: 210.0,
+                      ),
+                      showTitleActions: true, onConfirm: (time) {
+                    _time =
+                        'Day:${time.month}.${time.day} Time: ${time.hour}:${time.minute}';
+                    setState(() {});
+                  }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  setState(() {});
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.access_time,
+                                  size: 18.0,
+                                  color: Colors.teal,
+                                ),
+                                Text(
+                                  " $_time",
+                                  style: TextStyle(
+                                      color: Colors.teal,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Text(
+                        "  Change",
+                        style: TextStyle(
+                            color: Colors.teal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0),
+                      ),
+                    ],
+                  ),
+                ),
+                color: Colors.white,
               ),
-              verticalSpaceMedium,
-              Text('Post Image'),
-              verticalSpaceSmall,
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.center,
-                child: Text(
-                  'Tap to add post image',
-                  style: TextStyle(color: Colors.grey[400]),
+              verticalSpace(20),
+              InputField(
+                  placeholder: 'Service Fee',
+                  controller: serviceFeeController,
+                  textInputType: TextInputType.number),
+              InputField(
+                  placeholder: 'SubTotal',
+                  controller: subTotalFeeController,
+                  textInputType: TextInputType.number),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                  onPressed: () {
+                    if (!model.busy) {
+                      model.addPost(
+                          item: itemController.text,
+                          serviceFee: serviceFeeControlloer.text);
+                    }
+                  },
+                  child: const Text('Create Post!',
+                      style: TextStyle(fontSize: 20)),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  elevation: 5,
                 ),
               )
             ],
