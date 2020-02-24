@@ -6,8 +6,8 @@ import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/viewmodels/create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
-  final titleController = TextEditingController();
-  final descriptionControlloer = TextEditingController();
+  final itemController = TextEditingController();
+  final serviceFeeControlloer = TextEditingController();
 
   CreatePostView({Key key}) : super(key: key);
 
@@ -25,8 +25,8 @@ class CreatePostView extends StatelessWidget {
           onPressed: () {
             if (!model.busy) {
               model.addPost(
-                  title: titleController.text,
-                  description: descriptionControlloer.text);
+                  item: itemController.text,
+                  serviceFee: serviceFeeControlloer.text);
             }
           },
           backgroundColor:
@@ -45,11 +45,11 @@ class CreatePostView extends StatelessWidget {
               verticalSpaceMedium,
               InputField(
                 placeholder: 'Title',
-                controller: titleController,
+                controller: itemController,
               ),
               InputField(
                 placeholder: 'Description',
-                controller: descriptionControlloer,
+                controller: serviceFeeControlloer,
               ),
               verticalSpaceMedium,
               Text('Post Image'),

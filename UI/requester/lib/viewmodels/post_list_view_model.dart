@@ -31,5 +31,6 @@ class PostListViewModel extends BaseModel {
 
   Future navigateToCreateView() async {
     await _navigationService.navigateTo(CreatePostViewRoute);
+    await fetchPosts();
   }
 }
