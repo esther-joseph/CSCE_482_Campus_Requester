@@ -1,3 +1,4 @@
+import 'package:requester/ui/views/home_view.dart';
 import 'package:requester/ui/views/post_list_view.dart';
 import 'package:requester/ui/views/signup_view.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-      home: PostListView(),
+      home: HomeView(),
       onGenerateRoute: generateRoute,
     );
   }
