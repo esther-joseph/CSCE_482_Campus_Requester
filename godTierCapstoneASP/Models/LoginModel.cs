@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net;
+using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace godTierCapstoneASP.Models
 {
@@ -81,6 +87,83 @@ namespace godTierCapstoneASP.Models
         public string alg { get; set; }
 
         public string kid { get; set; }
+
+        public int id;
+
+        public void CreateUser(string sqlConnectionString)
+        {
+
+            SqlConnection connection = new SqlConnection(sqlConnectionString);
+
+            connection.Open();
+            using (SqlCommand cmd = new SqlCommand("AddUser", connection))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@googleId", sub);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@givenName", given_name);
+                cmd.Parameters.AddWithValue("@familyName", family_name);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@pictureUrl", picture);
+                cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
+                cmd.Parameters["@id"].Direction = System.Data.ParameterDirection.Output;
+
+                if (connection.State != System.Data.ConnectionState.Open)
+                    connection.Open();
+                cmd.ExecuteReader();
+
+                connection.Close();
+
+                /*
+                catch
+                {
+                    id = -1;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                */
+                id = Convert.ToInt32(cmd.Parameters["@id"].Value);
+            }
+
+
+        }
+
+        public static LoginModel verifyGoogleIdToken(string idToken, string clientId, string connectionString)
+        {
+            // Create an HttpClientHandler object and set to use default credentials
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+
+            // Create an HttpClient object
+            HttpClient httpClient = new HttpClient(handler);
+
+            var requestUri = new Uri(string.Format(connectionString, idToken));
+
+            HttpResponseMessage httpResponseMessage;
+            try
+            {
+                httpResponseMessage = httpClient.GetAsync(requestUri).Result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                return null;
+            }
+
+            var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
+
+            LoginModel userInfo = JsonSerializer.Deserialize<LoginModel>(response);
+
+            if (userInfo.aud == clientId)
+                return userInfo;
+            else return null;
+        }
 
     }
 }

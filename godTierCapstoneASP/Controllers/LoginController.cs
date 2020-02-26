@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Google;
 using System.Net.Http;
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using godTierCapstoneASP.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace godTierCapstoneASP.Controllers
 {
@@ -26,47 +28,38 @@ namespace godTierCapstoneASP.Controllers
         }
 
         [HttpPost]
-        public JsonResult VerifyUser(string idToken)
+        public async Task<JsonResult> VerifyUser(string idToken)
         {
+
+            LoginModel user = LoginModel.verifyGoogleIdToken(idToken, _configuration["Authentication:Google:ClientId"], _configuration.GetConnectionString("GoogleApiToken"));
+            if (user != null)
+                user.CreateUser(_configuration.GetConnectionString("DefaultConnection"));
+
+            //Create the identity for the user  
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.name),
+                    new Claim(ClaimTypes.Email, user.email),
+                    new Claim(ClaimTypes.NameIdentifier, user.sub),
+                    new Claim("picture", user.picture)
+                }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            //await HttpContext.AuthenticateAsync();
+
+            //HttpContext.User = principal;
+            return Json(principal);
             
-            // Create an HttpClientHandler object and set to use default credentials
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.UseDefaultCredentials = true;
+        }
 
-            // Create an HttpClient object
-            HttpClient httpClient = new HttpClient(handler);
-
-            var requestUri = new Uri(string.Format(_configuration.GetConnectionString("GoogleApiToken"), idToken));
-
-            HttpResponseMessage httpResponseMessage;
-            try
-            {
-                httpResponseMessage = httpClient.GetAsync(requestUri).Result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-
-            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
-            {
-                return null;
-            }
-
-            var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
+        public async Task<ActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync();
             
-            LoginModel userInfo = JsonSerializer.Deserialize<LoginModel>(response);
-
-            if (userInfo.aud == _configuration["Authentication:Google:ClientId"])
-                return Json(userInfo);
-            else return null;
-            /*
-            if (!SupportedClientsIds.Contains(googleApiTokenInfo.aud))
-            {
-                Log.WarnFormat("Google API Token Info aud field ({0}) not containing the required client id", googleApiTokenInfo.aud);
-                return null;
-            }
-            */
+           
+            return RedirectToAction("Index", "Home");
         }
     }
 }
