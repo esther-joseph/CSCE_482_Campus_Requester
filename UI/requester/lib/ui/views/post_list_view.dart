@@ -109,7 +109,7 @@ class _PostListViewState extends State<PostListView> {
                                                       .deliverBy)),
                                               Text(prepareData[index]
                                                   .post
-                                                  .serviceFee)
+                                                  .serviceFee),
                                             ],
                                           ));
                                     },
