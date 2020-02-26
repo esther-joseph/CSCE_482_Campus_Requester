@@ -19,6 +19,7 @@ function redirectPost(url, data) {
 
 function onSignIn(googleUser) {
     var idToken = googleUser.getAuthResponse().id_token;
+    console.log(idToken);
     var url = "/Login/VerifyUser";
     var data = { idToken: googleUser.getAuthResponse().id_token }
     $.post(url, data, function (result) { console.log(result); });
