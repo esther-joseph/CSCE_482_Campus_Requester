@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-      home: PostListView(),
+      home: CreatePostView(),
       onGenerateRoute: generateRoute,
     );
   }

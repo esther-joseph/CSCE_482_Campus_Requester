@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using godTierCapstoneASP.Models;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 
 namespace godTierCapstoneASP.Controllers
 {
@@ -18,6 +20,7 @@ namespace godTierCapstoneASP.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: Posts
         public async Task<IActionResult> Index()
         {
@@ -25,6 +28,7 @@ namespace godTierCapstoneASP.Controllers
         }
 
         // GET: Posts/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,6 +46,7 @@ namespace godTierCapstoneASP.Controllers
             return View(post);
         }
 
+        [Authorize]
         // GET: Posts/Create
         public IActionResult Create()
         {
@@ -52,7 +57,8 @@ namespace godTierCapstoneASP.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,details,creationTime,isOpen")] Post post)
         {
             if (ModelState.IsValid)
@@ -64,6 +70,7 @@ namespace godTierCapstoneASP.Controllers
             return View(post);
         }
 
+        [Authorize]
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -81,12 +88,14 @@ namespace godTierCapstoneASP.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public JsonResult ViewRecentPosts(int count=50)
         {
             return Json(_context.Posts.Where(p => p.isOpen == true).OrderByDescending(p => p.id).Take(count));
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> CompletePost(int? id)
         {
             if (id == null)
@@ -111,6 +120,7 @@ namespace godTierCapstoneASP.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,details")] Post post)
         {
