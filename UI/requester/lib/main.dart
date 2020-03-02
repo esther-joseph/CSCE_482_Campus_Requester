@@ -9,6 +9,7 @@ import 'package:requester/ui/views/splash_view.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
 import 'locator.dart';
+import 'ui/views/post_list_view.dart';
 
 void main() {
   setupLocator();
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-      home: HomeView(),
+      home: PostListView(),
       onGenerateRoute: generateRoute,
     );
   }
