@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/viewmodels/post_list_view_model.dart';
 
+import '../widgets/bottom_navbar.dart';
+
 class ItemModel {
   bool isExpanded;
   Post post;
@@ -72,7 +74,7 @@ class _PostListViewState extends State<PostListView> {
                                   ExpansionPanel(
                                     body: Container(
                                       padding: EdgeInsets.all(10),
-                                      child: Row(
+                                      child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
@@ -89,7 +91,31 @@ class _PostListViewState extends State<PostListView> {
                                               color: Colors.grey[700],
                                               fontSize: 18,
                                             ),
+                                          ),
+                                          SizedBox(
+                                            width: 80,
+                                            height: 30,
+                                            child: RaisedButton(onPressed: () {
+                                              final snackBar = SnackBar(
+                                                content: Text('You Accepted!'),
+                                                action: SnackBarAction(
+                                                  label: 'Undo',
+                                                  onPressed: () {
+                                                    // Some code to undo the change.
+                                                  },
+                                                ),
+                                              );
+
+                                              // Find the Scaffold in the widget tree and use
+                                              // it to show a SnackBar.
+                                              Scaffold.of(context).showSnackBar(snackBar);
+                                            },
+                                            child: Text(
+                                              'Accept',
+                                              style: TextStyle(fontSize: 15),
+                                            ),)
                                           )
+                                          
                                         ],
                                       ),
                                     ),
@@ -127,6 +153,7 @@ class _PostListViewState extends State<PostListView> {
                   ],
                 ),
               ),
+              bottomNavigationBar: BottomNabar(),
             ));
   }
 
