@@ -11,11 +11,13 @@ using Microsoft.Extensions.Hosting;
 using godTierCapstoneASP.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+//using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace godTierCapstoneASP
 {
@@ -35,15 +37,30 @@ namespace godTierCapstoneASP
             services.AddControllersWithViews();
             services.AddSingleton<IConfiguration>(Configuration);
 
+            var key = Encoding.ASCII.GetBytes(Configuration["Authentication:Google:ClientSecret"]);
+
             #region snippet_AddGoogle
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
-            }).AddCookie().AddGoogle(options =>
+            }).AddJwtBearer(x =>
             {
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            }).AddGoogle(options => //.AddCookie().AddGoogle(options =>
+            {
+                //options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
 
                 // Provide the Google Client ID
                 options.ClientId = Configuration["Authentication:Google:ClientId"];

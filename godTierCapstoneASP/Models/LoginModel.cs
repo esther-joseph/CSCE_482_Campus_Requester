@@ -88,6 +88,8 @@ namespace godTierCapstoneASP.Models
 
         public string kid { get; set; }
 
+        public string jwtToken { get; set; }
+
         public int id;
 
         public void CreateUser(string sqlConnectionString)
