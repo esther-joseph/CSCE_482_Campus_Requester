@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/services/dialog_service.dart';
 import 'package:requester/ui/views/create_post_view.dart';
+import 'package:requester/ui/views/delivery_list_view.dart';
+import 'package:requester/ui/views/home_view.dart';
 import 'package:requester/ui/views/login_view.dart';
 import 'package:requester/ui/views/post_list_view.dart';
 import 'package:requester/ui/views/splash_view.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
 import 'locator.dart';
+import 'ui/views/post_list_view.dart';
 
 void main() {
   setupLocator();
@@ -32,8 +35,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-
-      home: CreatePostView(),
+      home: DeliveryListView(),
       onGenerateRoute: generateRoute,
     );
   }
