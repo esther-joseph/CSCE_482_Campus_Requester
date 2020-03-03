@@ -6,19 +6,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using godTierCapstoneASP.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace godTierCapstoneASP.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IConfiguration configuration)
         {
-            _logger = logger;
+            _configuration = configuration;
         }
 
         public ActionResult Index()
+        {
+            ViewData["GoogleClientId"] = _configuration.GetConnectionString("GoogleClientId");
+            return View();
+        }
+
+        public ActionResult Models()
+        {
+            return View();
+        }
+
+        public ActionResult ApiCalls()
         {
             return View();
         }

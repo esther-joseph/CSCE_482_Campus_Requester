@@ -20,9 +20,10 @@ function redirectPost(url, data) {
 function onSignIn(googleUser) {
     var idToken = googleUser.getAuthResponse().id_token;
     console.log(idToken);
-    var url = "/Login/VerifyUser";
-    var data = { idToken: googleUser.getAuthResponse().id_token }
-    $.post(url, data, function (result) { console.log(result); });
+    document.getElementById("idParagraph").innerHTML = idToken;
+    var ele = $("idParagraph");
+    ele.text(idToken);
+    $('idParagraph').text(idToken);
 }
 
 /*
@@ -34,10 +35,8 @@ function onLoad() {
 */
 
 function signOut() {
-    //window.alert("sign out javascript called");
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');
     });
-    //location.reload();
 }

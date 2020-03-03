@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,8 +13,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-//using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -33,16 +30,19 @@ namespace godTierCapstoneASP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PostContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddDbContext<PostContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LoginContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
             services.AddSingleton<IConfiguration>(Configuration);
+            godTierCapstoneASP.Controllers.LoginController._configuration = Configuration;
 
-            var key = Encoding.ASCII.GetBytes(Configuration["Authentication:Google:ClientSecret"]);
 
-            #region snippet_AddGoogle
+            var key = Encoding.ASCII.GetBytes(Configuration.GetConnectionString("GoogleClientSecret"));
+
+            #region AddGoogle authentication
             services.AddAuthentication(options =>
             {
-                //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
@@ -57,26 +57,21 @@ namespace godTierCapstoneASP
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            }).AddGoogle(options => //.AddCookie().AddGoogle(options =>
+            }).AddGoogle(options =>
             {
                 //options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
 
                 // Provide the Google Client ID
-                options.ClientId = Configuration["Authentication:Google:ClientId"];
-                // Register with User Secrets using:
-                // dotnet user-secrets set "Authentication:Google:ClientId" "{Client ID}"
+                options.ClientId = Configuration.GetConnectionString("GoogleClientId");
 
                 options.CallbackPath = "/Home/Index";
 
                 // Provide the Google Client Secret
-                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                options.ClientSecret = Configuration.GetConnectionString("GoogleClientSecret");
                 // Register with User Secrets using:
-                // dotnet user-secrets set "Authentication:Google:ClientSecret" "{Client Secret}"
 
-                //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                //options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
-                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
                 options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
                 options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
                 options.ClaimActions.MapJsonKey("picture", "picture");
@@ -99,17 +94,6 @@ namespace godTierCapstoneASP
                 };
             });
             #endregion
-            /*
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    IConfigurationSection googleAuthNSection =
-                        Configuration.GetSection("Authentication:Google");
-
-                    options.ClientId = googleAuthNSection["ClientId"];
-                    options.ClientSecret = googleAuthNSection["ClientSecret"];
-                });
-                */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,6 +109,7 @@ namespace godTierCapstoneASP
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

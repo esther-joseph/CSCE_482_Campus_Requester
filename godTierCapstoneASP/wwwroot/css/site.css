@@ -69,3 +69,27 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* HTML tables for API calls and Models pages */
+table.infoTable {
+    text-align: center;
+    border-style: double;
+    border-width: 5px;
+    border-color: black;
+    margin: 10px 5px 10px 5px;
+}
+table.infoTable tr {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+table.infoTable th {
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+}
+table.infoTable td {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
