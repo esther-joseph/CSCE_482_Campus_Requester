@@ -16,12 +16,12 @@ class ItemModel {
   ItemModel({this.isExpanded: false, this.post});
 }
 
-class PostListView extends StatefulWidget {
+class PastDeliveryList extends StatefulWidget {
   @override
-  _PostListViewState createState() => _PostListViewState();
+  _PastDeliveryListState createState() => _PastDeliveryListState();
 }
 
-class _PostListViewState extends State<PostListView> {
+class _PastDeliveryListState extends State<PastDeliveryList> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PostListViewModel>.withConsumer(
@@ -92,33 +92,10 @@ class _PostListViewState extends State<PostListView> {
                                               fontSize: 13,
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 80,
-                                            height: 30,
-                                            child: RaisedButton(onPressed: () {
-                                              final snackBar = SnackBar(
-                                                content: Text('You Accepted!'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {
-                                                    // Some code to undo the change.
-                                                  },
-                                                ),
-                                              );
-
-                                              // Find the Scaffold in the widget tree and use
-                                              // it to show a SnackBar.
-                                              Scaffold.of(context).showSnackBar(snackBar);
-                                            },
-                                            child: Text(
-                                              'Accept',
-                                              style: TextStyle(fontSize: 15),
-                                            ),)
-                                          )
                                           
-                                        ],
+                                        ]
+                                      )
                                       ),
-                                    ),
                                     headerBuilder: (context, isExpanded) {
                                       return Container(
                                           padding: EdgeInsets.all(10),
@@ -153,7 +130,6 @@ class _PostListViewState extends State<PostListView> {
                   ],
                 ),
               ),
-              bottomNavigationBar: BottomNabar(),
             ));
   }
 
