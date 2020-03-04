@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 class AuthenticationService {
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
-
   Future loginWithEmail(
       {@required String email, @required String password}) async {
     try {
@@ -18,9 +16,9 @@ class AuthenticationService {
   Future signUpWithEmail(
       {@required String email,
       @required String password,
-      @required String confirm}) async {
+      @required String userName}) async {
     try {
-      //var user = await signUp(email, password, confirm)
+      // String token = await signUp(email, password, userName)
       //return user != null;
     } catch (e) {
       return e.message;

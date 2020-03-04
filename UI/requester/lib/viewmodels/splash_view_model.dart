@@ -10,7 +10,8 @@ class SplashViewModel extends BaseModel {
   final _navigationService = locator<NavigationService>();
 
   Future handleStartUpLogic() async {
-    var hasLoggedInUser = await _authenticationService.isUserLoggedIn();
+    var hasLoggedInUser = null;
+    // await _authenticationService.isUserLoggedIn();
 
     if (hasLoggedInUser) {
       _navigationService.navigateTo(HomeViewRoute);

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
