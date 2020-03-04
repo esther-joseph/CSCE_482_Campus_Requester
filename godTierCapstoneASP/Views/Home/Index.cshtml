@@ -3,6 +3,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Woot</h1>
-    <p>It Works!!!</p>
+    <h1 class="display-4">Used to generate a google ID for a user here</h1>
+    <!--
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        -->
+    <p id="idParagraph" style="max-width:80%; overflow:scroll;">user's id token</p>
+    @if (ViewData["User"] != null)
+    {
+        <p style="max-width:90%; overflow:scroll;">@ViewData["User"]</p>
+    }
 </div>

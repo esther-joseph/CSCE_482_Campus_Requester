@@ -17,36 +17,28 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace godTierCapstoneASP.Controllers
 {
-    public class LoginController : Controller
+    public class CustomLoginController : Controller
     {
         //private LoginContext _context;
-        private readonly LoginContext _context;
+        private readonly CustomLoginContext _context;
 
         public static IConfiguration _configuration;
 
-        public LoginController(LoginContext context)
+        public CustomLoginController(CustomLoginContext context)
         {
             _context = context;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(string idToken)
+        public async Task<IActionResult> SignIn(string username, string password)
         {
-            if (String.IsNullOrWhiteSpace(idToken))
-                return BadRequest("id token is null or empty");
+            if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password))
+                return BadRequest();
 
-            LoginModel user = await LoginModel.verifyGoogleIdToken(idToken, _configuration.GetConnectionString("GoogleClientId"), _configuration.GetConnectionString("GoogleApiToken"));
+            CustomLoginModel user = await _context.Users.FirstOrDefaultAsync(x => x.username == username && x.password == password);
 
             if (user != null)
             {
-                LoginModel newUser = await _context.Users.FirstOrDefaultAsync(m => m.sub == user.sub);
-                if(newUser == null)
-                {
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-                    newUser = await _context.Users.FirstOrDefaultAsync(m => m.sub == user.sub);
-                }
-
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_configuration.GetConnectionString("GoogleClientSecret"));
 
@@ -54,22 +46,21 @@ namespace godTierCapstoneASP.Controllers
                 {
                     Subject = new ClaimsIdentity(new[]
                     {
-                    new Claim(ClaimTypes.Name, newUser.name),
-                    new Claim(ClaimTypes.Email, newUser.email),
-                    new Claim(ClaimTypes.NameIdentifier, newUser.id.ToString()),
-                    new Claim("picture", newUser.picture)
+                    new Claim(ClaimTypes.Name, user.username),
+                    new Claim(ClaimTypes.Email, user.email),
+                    new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
                 }),
                     Expires = DateTime.UtcNow.AddDays(30),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                newUser.jwtToken = tokenHandler.WriteToken(token);
-                return Ok(newUser);
+                user.jwtToken = tokenHandler.WriteToken(token);
+                return Ok(user);
             }
             else
             {
-                return BadRequest("Google returned null. IdToken recieved: " + idToken);
+                return BadRequest("Invalid Username or password");
             }
         }
 
@@ -78,6 +69,22 @@ namespace godTierCapstoneASP.Controllers
         {
             await HttpContext.SignOutAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register([Bind("username, password, email")] CustomLoginModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                bool exists = await _context.Users.AnyAsync(x => x.username == user.username || x.email == user.email);
+                if (exists)
+                    return BadRequest("duplicate username or email");
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                return Ok(user.id);
+            }
+            else
+                return BadRequest();
         }
     }
 }

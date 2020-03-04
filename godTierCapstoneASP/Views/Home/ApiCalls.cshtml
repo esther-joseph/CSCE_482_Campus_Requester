@@ -1,0 +1,453 @@
+﻿
+@{
+    ViewData["Title"] = "API Calls";
+}
+
+<h1>ApiCalls</h1>
+
+<!-- Home Controller Table -->
+<table class="infoTable">
+    <tr>
+        <th colspan="5">
+            Home Controller
+        </th>
+    </tr>
+    <tr>
+        <th>
+            URL
+        </th>
+        <th>
+            Request Type
+        </th>
+        <th>
+            Parameters
+        </th>
+        <th>
+            Returns
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+    <tr>
+        <td>
+            /Home/Index
+        </td>
+        <td>
+            GET
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            HTML
+        </td>
+        <td>
+            The home page to obtain a google id token for testing purposes.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            /Home/Models
+        </td>
+        <td>
+            GET
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            HTML
+        </td>
+        <td>
+            Page containing details about all objects that the API takes as input or returns
+        </td>
+    </tr>
+    <tr>
+        <td>
+            /Home/ApiCalls
+        </td>
+        <td>
+            GET
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            HTML
+        </td>
+        <td>
+            This page. Contains details about all valid URLs for the API.
+        </td>
+    </tr>
+</table>
+
+<!-- Login Controller Table -->
+<table class="infoTable">
+    <tr>
+        <th colspan="5">
+            Custom Login Controller
+        </th>
+    </tr>
+    <tr>
+        <th>
+            URL
+        </th>
+        <th>
+            Request Type
+        </th>
+        <th>
+            Parameters
+        </th>
+        <th>
+            Returns
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+    <tr>
+        <td>
+            /CustomLogin/SignIn
+        </td>
+        <td>
+            POST
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            username - string
+            <br />
+            password - string
+        </td>
+        <td>
+            HTTP 200 (Ok) - CustomLoginModel
+            <br />
+            HTTP 400 (Bad Request)
+        </td>
+        <td>
+            Verifies the given username and password and upon verifications, logs in the user and returns the CustomLoginModel with status code 200 (OK).
+            <br />
+            If verification with google fails or if an empty idToken is passed, then returns 400 (Bad Request).
+        </td>
+    </tr>
+    <tr>
+        <td>
+            /CustomLogin/SignOut
+        </td>
+        <td>
+            GET
+            <br />
+            Authorized
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            HTTP 200 (OK)
+        </td>
+        <td>
+            Logs out the currently signed in user.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            /CustomLogin/Register
+        </td>
+        <td>
+            POST
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            CustomLoginModel
+        </td>
+        <td>
+            HTTP 200 (Ok) - id
+            <br />
+            HTTP 400 (Bad Request)
+        </td>
+        <td>
+            Verifies the given username and password and upon verifications, creates an account and returns the id of the newly created account.
+            The user still needs to sign in.
+            <br />
+            If verification fails or if an empty or duplicate username or email is passed, then returns 400 (Bad Request).
+        </td>
+    </tr>
+</table>
+
+<!-- Login Controller Table -->
+<table class="infoTable">
+    <tr>
+        <th colspan="5">
+            Login Controller
+        </th>
+    </tr>
+    <tr>
+        <th>
+            URL
+        </th>
+        <th>
+            Request Type
+        </th>
+        <th>
+            Parameters
+        </th>
+        <th>
+            Returns
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+    <tr>
+        <td>
+            /Login/SignIn
+        </td>
+        <td>
+            POST
+            <br />
+            Unauthorized
+        </td>
+        <td>
+            idToken - string
+        </td>
+        <td>
+            HTTP 200 (Ok) - LoginModel
+            <br />
+            HTTP 400 (Bad Request)
+        </td>
+        <td>
+            Verifies the given google ID Token with google and upon verifications, logs in the user and returns the LoginModel with status code 200 (OK).
+            <br />
+            If verification with google fails or if an empty idToken is passed, then returns 400 (Bad Request).
+        </td>
+    </tr>
+    <tr>
+        <td>
+            /Login/SignOut
+        </td>
+        <td>
+            GET
+            <br />
+            Authorized
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            HTTP 200 (OK)
+        </td>
+        <td>
+            Logs out the currently signed in user.
+        </td>
+    </tr>
+</table>
+
+<!-- Post Controller Table -->
+<table class="infoTable">
+    <!-- First header row -->
+    <tr>
+        <th colspan="5">
+            Posts Controller
+        </th>
+    </tr>
+    <!-- Second header row -->
+    <tr>
+        <th>
+            URL
+        </th>
+        <th>
+            Request Type
+        </th>
+        <th>
+            Parameters
+        </th>
+        <th>
+            Returns
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+
+    <!-- /Posts/Details/ -->
+    <tr>
+        <td>
+            /Posts/Details
+        </td>
+        <td>
+            GET
+            <br />
+            Authorized
+        </td>
+        <td>
+            id - int
+        </td>
+        <td>
+            HTTP 200 (Ok) - PostModel
+            <br />
+            HTTP 404 (Not Found)
+            <br />
+            HTTP 401 (Unauthorized)
+        </td>
+        <td>
+            Takes in a post ID and returns the PostModel with status code 200 if the ID is a valid ID, HTTP-404 if not found or 401 if requesting an unopened post unassociated with the user.
+        </td>
+    </tr>
+
+    <!-- /Posts/Create -->
+    <tr>
+        <td>
+            /Posts/Create
+        </td>
+        <td>
+            POST
+            <br />
+            Authorized
+        </td>
+        <td>
+            PostModel
+        </td>
+        <td>
+            HTTP 200 (Ok) - int
+            <br />
+            HTTP 400 (Bad Request)
+        </td>
+        <td>
+            Creates a post based on the given Post model and returns the id of the post that's created with status code 200. If the given model is invalid, returns Bad Request (400) status code.
+        </td>
+    </tr>
+
+    <!-- /Posts/View Recent -->
+    <tr>
+        <td>
+            /Posts/ViewRecent
+        </td>
+        <td>
+            GET
+            <br />
+            Authorized
+        </td>
+        <td>
+            count - int (optional parameter - default value 50)
+        </td>
+        <td>
+            PostModel[ ]
+        </td>
+        <td>
+            Returns an array of PostModel with at most 'count' elements sorted in descending order of creation date. Only returns most recent 'count' posts that are open (not accpeted or completed) and not created by the current user.
+        </td>
+    </tr>
+
+    <!-- /Posts/Accept -->
+    <tr>
+        <td>
+            /Posts/Accept
+        </td>
+        <td>
+            POST
+            <br />
+            Authorized
+        </td>
+        <td>
+            id - int
+        </td>
+        <td>
+            HTTP - 200 (Ok)
+            <br />
+            HTTP - 404 (Not Found)
+            <br />
+            HTTP - 400 (Bad Request)
+        </td>
+        <td>
+            Marks the post with the given id as accepted and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not open, then returns HTTP 400 (Bad Request). If the post is open and was created by the current user, then returns HTTP 400 (Bad Request).
+        </td>
+    </tr>
+
+    <!-- /Posts/Complete -->
+    <tr>
+        <td>
+            /Posts/Complete
+        </td>
+        <td>
+            POST
+            <br />
+            Authorized
+        </td>
+        <td>
+            id - int
+        </td>
+        <td>
+            HTTP - 200 (Ok)
+            <br />
+            HTTP - 404 (Not Found)
+            <br />
+            HTTP - 401 (Unauthorized)
+            <br />
+            HTTP - 400 (Bad Request)
+        </td>
+        <td>
+            Marks the post with the given id as completed and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not accepted, then returns HTTP 400 (Bad Request). If it is accepted, but the current user is neither the creator nor the acceptor, then returns 401 (Unauthorized).
+            <br />
+            As of now, the user who delivers is the same as the user who accepts.
+        </td>
+    </tr>
+
+    <!-- /Posts/Edit -->
+    <tr>
+        <td>
+            /Posts/Edit
+        </td>
+        <td>
+            POST
+            <br />
+            Authorized
+        </td>
+        <td>
+            PostModel
+        </td>
+        <td>
+            HTTP - 200 (Ok)
+            <br />
+            HTTP - 401 (Unauthorized)
+            <br />
+            HTTP - 400 (Bad Request)
+        </td>
+        <td>
+            Updates an existing post with new information. Returns status code 200 (Ok) upon success. if the post with given id doesn't exists or if that post is not open, then returns status code 400 (Bad Request). If the post was not created by the current user then returns 401 (Unauthorized).
+        </td>
+    </tr>
+
+    <!-- /Posts/Delete -->
+    <tr>
+        <td>
+            /Posts/Delete
+        </td>
+        <td>
+            POST
+            <br />
+            Authorized
+        </td>
+        <td>
+            id - int
+        </td>
+        <td>
+            HTTP - 200 (Ok)
+            <br />
+            HTTP - 401 (Unauthorized)
+            <br />
+            HTTP - 400 (Bad Request)
+        </td>
+        <td>
+            Deletes the post with the given id. if the id is null or a post with that id doesn't exist or if the post is not open or expired, then returns 400 (Bad Request). If the post was not created by the current user, then returns 401 (Unauthorized).
+        </td>
+    </tr>
+
+</table>

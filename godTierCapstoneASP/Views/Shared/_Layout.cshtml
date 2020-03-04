@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-signin-client_id" content="1032363315474-lprl558v28nkl67vrb2c1rve3l0n3em3.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="@ViewData["GoogleClientId"]" />
     <title>@ViewData["Title"] - godTierCapstoneASP</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -23,31 +23,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Models">Models</a>
                         </li>
-
-
-                        @if (User.Identity.IsAuthenticated == false)
-                        {
-                            <li class="nav-item">
-                                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" }></div>
-                            </li>
-                        }
-
-
-                        else
-                        {
-                            <li class="nav-item" style="display:none">
-                                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" }></div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="SignOut" onclick="signOut()">Sign Out</a>
-                            </li>
-                            <li>
-                                @Context.User.Identity.Name
-                                <img src="@Context.User.Claims.SingleOrDefault(c => c.Type == "picture")?.Value" width="50" height="50" />
-                            </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ApiCalls">API Calls</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -67,7 +47,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

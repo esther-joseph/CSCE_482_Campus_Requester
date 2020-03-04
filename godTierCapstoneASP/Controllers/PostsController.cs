@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using godTierCapstoneASP.Models;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace godTierCapstoneASP.Controllers
 {
@@ -20,14 +22,8 @@ namespace godTierCapstoneASP.Controllers
             _context = context;
         }
 
-        [Authorize]
-        // GET: Posts
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Posts.ToListAsync());
-        }
-
         // GET: Posts/Details/5
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
@@ -36,157 +32,164 @@ namespace godTierCapstoneASP.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.id == id);
+            PostModel post = await _context.Posts.FirstOrDefaultAsync(m => m.id == id);
+
             if (post == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            if (post.status != PostStatus.Open)
+            {
+                int currentUser = getCurrentUserId();
+                bool authorized = false;
+                if (post.createdBy == currentUser)
+                    authorized = true;
+                else if (post.acceptedBy != null && post.acceptedBy == currentUser)
+                    authorized = true;
+                else if (post.deliveredBy != null && post.deliveredBy == currentUser)
+                    authorized = true;
+
+                if(authorized == false)
+                    return Unauthorized();
+            }
+
+            return Ok(post);
         }
 
-        [Authorize]
-        // GET: Posts/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Posts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,details,creationTime,isOpen")] Post post)
+        public async Task<IActionResult> Create([Bind("originLat,originLong,destinationLat,destinationLong,details")] PostModel post)
         {
             if (ModelState.IsValid)
             {
+                //if (post.originLat == null || post.originLong == null || post.destinationLat == null || post.destinationLong == null)
+                    //return BadRequest();
+                post.createdBy = getCurrentUserId();
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
+                return Ok(post.id);
             }
-            return View(post);
-        }
-
-        [Authorize]
-        // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-            return View(post);
+            return BadRequest();
         }
 
         [HttpGet]
         [Authorize]
-        public JsonResult ViewRecentPosts(int count=50)
+        public JsonResult ViewRecent(int count=50)
         {
-            return Json(_context.Posts.Where(p => p.isOpen == true).OrderByDescending(p => p.id).Take(count));
+            return Json(_context.Posts.Where(p => p.status == PostStatus.Open && p.createdBy != getCurrentUserId()).OrderByDescending(p => p.id).Take(count));
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult> CompletePost(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var post = await _context.Posts
-                .FirstOrDefaultAsync(p => p.id == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            post.isOpen = false;
-            _context.Posts.Update(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // POST: Posts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,details")] Post post)
-        {
-            if (id != post.id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    string newDetails = post.details;
-                    post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
-                    post.details = newDetails;
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostExists(post.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(post);
-        }
-
-        // GET: Posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<ActionResult> Accept(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.id == id);
+            PostModel post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
+
             if (post == null)
-            {
                 return NotFound();
-            }
 
-            return View(post);
+            if (post.status == PostStatus.Open)
+            {
+                if (post.createdBy == getCurrentUserId())
+                    return BadRequest();
+                post.status = PostStatus.Accepted;
+                post.acceptedBy = getCurrentUserId();
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return BadRequest();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Complete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            PostModel post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
+
+            if (post == null)
+                return NotFound();
+
+            if (post.status == PostStatus.Accepted)
+            {
+                int currentUser = getCurrentUserId();
+                if (post.acceptedBy != currentUser && post.createdBy != currentUser)
+                    return Unauthorized();
+                post.status = PostStatus.Completed;
+                post.deliveredBy = post.acceptedBy;
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return BadRequest();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit([Bind("id, details, originLat, originLong, destinationLat, destinationLong")] PostModel post)
+        {
+            PostModel existingPost = await _context.Posts.FirstOrDefaultAsync(m => m.id == post.id);
+
+            if(existingPost == null)
+                return BadRequest();
+            if (existingPost.status != PostStatus.Open)
+                return BadRequest();
+            if (existingPost.createdBy != getCurrentUserId())
+                return Unauthorized();
+
+            existingPost.details = post.details;
+            existingPost.originLat = post.originLat;
+            existingPost.originLong = post.originLong;
+            existingPost.destinationLat = post.destinationLat;
+            existingPost.destinationLong = post.destinationLong;
+
+            _context.Update(existingPost);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         // POST: Posts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int? id)
         {
-            var post = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(post);
+            if (id == null)
+                return BadRequest();
+
+            PostModel post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
+
+            if (post == null)
+                return BadRequest();
+
+            if (post.status != PostStatus.Open && post.status != PostStatus.Expired)
+                return BadRequest();
+
+            if (post.createdBy != getCurrentUserId())
+                return Unauthorized();
+
+            post.status = PostStatus.Deleted;
+            _context.Update(post);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
-        private bool PostExists(int id)
+        /// <summary>
+        /// returns the id of the currently signed in user
+        /// </summary>
+        /// <returns></returns>
+        private int getCurrentUserId()
         {
-            return _context.Posts.Any(e => e.id == id);
+            return Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
     }
 }
