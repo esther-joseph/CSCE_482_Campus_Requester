@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace godTierCapstoneASP.Models
@@ -25,12 +26,38 @@ namespace godTierCapstoneASP.Models
         /// <summary>
         /// The text contained in the post. Typed by the user
         /// </summary>
+        [Required]
         public string details { get; set; }
 
         /// <summary>
         /// The PostStatus (open, accepted, completed, expired or deleted.
         /// </summary>
         public int status { get; set; }
+
+        /// <summary>
+        /// Latitude of the original location (pickup point)
+        /// </summary>
+        [Required]
+        public decimal? originLat { get; set; }
+
+        /// <summary>
+        /// longitude of the origin location (pickup point)
+        /// </summary>
+        [Required]
+        public decimal? originLong { get; set; }
+
+        /// <summary>
+        /// latitude of destination location (delivery location)
+        /// </summary>
+        [Required]
+        public decimal? destinationLat { get; set; }
+
+        /// <summary>
+        /// longitude of destination location (Delivery location)
+        /// </summary>
+        [Required]
+        public decimal? destinationLong { get; set; }
+
 
         /// <summary>
         /// The user id of the user who created the post.
@@ -63,19 +90,19 @@ namespace godTierCapstoneASP.Models
         /// The user who created the post
         /// </summary>
         [ForeignKey("createdBy")]
-        public LoginModel createdByUser { get; set; }
+        public CustomLoginModel createdByUser { get; set; }
 
         /// <summary>
         /// The user who accepted the post
         /// </summary>
         [ForeignKey("acceptedBy")]
-        public LoginModel acceptedByUser { get; set; }
+        public CustomLoginModel acceptedByUser { get; set; }
 
         /// <summary>
         /// The user who is delivering or has delivered the post
         /// </summary>
         [ForeignKey("deliveredBy")]
-        public LoginModel deliveredByUser { get; set; }
+        public CustomLoginModel deliveredByUser { get; set; }
     }
 
     public class PostContext : DbContext

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
+
 namespace godTierCapstoneASP.Controllers
 {
     public class PostsController : Controller
@@ -58,10 +59,12 @@ namespace godTierCapstoneASP.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("details")] PostModel post)
+        public async Task<IActionResult> Create([Bind("originLat,originLong,destinationLat,destinationLong,details")] PostModel post)
         {
             if (ModelState.IsValid)
             {
+                //if (post.originLat == null || post.originLong == null || post.destinationLat == null || post.destinationLong == null)
+                    //return BadRequest();
                 post.createdBy = getCurrentUserId();
                 _context.Add(post);
                 await _context.SaveChangesAsync();
@@ -133,7 +136,7 @@ namespace godTierCapstoneASP.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit([Bind("id, details")] PostModel post)
+        public async Task<IActionResult> Edit([Bind("id, details, originLat, originLong, destinationLat, destinationLong")] PostModel post)
         {
             PostModel existingPost = await _context.Posts.FirstOrDefaultAsync(m => m.id == post.id);
 
@@ -145,6 +148,10 @@ namespace godTierCapstoneASP.Controllers
                 return Unauthorized();
 
             existingPost.details = post.details;
+            existingPost.originLat = post.originLat;
+            existingPost.originLong = post.originLong;
+            existingPost.destinationLat = post.destinationLat;
+            existingPost.destinationLong = post.destinationLong;
 
             _context.Update(existingPost);
             await _context.SaveChangesAsync();
