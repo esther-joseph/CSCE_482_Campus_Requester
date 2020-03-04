@@ -7,7 +7,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelProvider<SplashViewModel>.withConsumer(
       viewModel: SplashViewModel(),
-      onModelReady: (model) => model.handleStartUpLogic(),
+      //onModelReady: (model) => model.handleStartUpLogic(),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: Center(

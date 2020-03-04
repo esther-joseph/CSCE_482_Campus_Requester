@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
               bodyColor: Colors.black,
               displayColor: Colors.black)),
+
       builder: (context, child) => Navigator(
         key: locator<DialogService>().dialogNavigationKey,
         onGenerateRoute: (settings) => MaterialPageRoute(
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigationKey,
       home: ChangeNotifierProvider(
           create: (context) => PlaceListViewModel(), child: HomeView()),
+      // home: LoginView(),
       onGenerateRoute: generateRoute,
     );
   }

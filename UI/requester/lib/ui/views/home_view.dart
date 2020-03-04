@@ -49,43 +49,27 @@ class _HomeViewState extends State<HomeView> {
     final vm = Provider.of<PlaceListViewModel>(context);
 
     return Scaffold(
-      appBar: BaseAppbar.getAppBar('Home'),
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-              markers: _getPlaceMarkers(vm.places),
-              myLocationEnabled: true,
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(30.610369, -96.344056), zoom: 14)),
-
-          InputField(
-            placeholder: 'Email',
-            controller: menuController,
-
-            // enterPressed: () => {
-            //    vm.fetchPlacesByKeywordAndPosition(menuController.text, _currentPosition.latitude, _currentPosition.longitude);
-            //    }
+      body: Stack(children: <Widget>[
+        GoogleMap(
+          markers: _getPlaceMarkers(vm.places),
+          myLocationEnabled: true,
+          onMapCreated: _onMapCreated,
+          initialCameraPosition:
+              CameraPosition(target: LatLng(45.521563, -122.677433), zoom: 14),
+        ),
+        SafeArea(
+          child: TextField(
+            onSubmitted: (value) {
+              vm.fetchPlacesByKeywordAndPosition(
+                  value, _currentPosition.latitude, _currentPosition.longitude);
+            },
+            decoration: InputDecoration(
+                labelText: "Search here",
+                fillColor: Colors.white,
+                filled: true),
           ),
-
-          // BusyButton(
-          //     title: 'Sign Up',
-          //     onPressed: () {
-          //        vm.fetchPlacesByKeywordAndPosition(menuController.text, _currentPosition.latitude, _currentPosition.longitude);
-          //     },
-          //   )
-          // child: new TextField(
-          // decoration: InputDecoration(
-          //   labelText: "Seach here",
-          //   fillColor: Colors.white,
-          //   filled: true
-          // ),
-          // onSubmitted: (String value){
-          //   vm.fetchPlacesByKeywordAndPosition(value, _currentPosition.latitude, _currentPosition.longitude);
-          //   print(value);
-          // },
-        ],
-      ),
+        )
+      ]),
     );
   }
 }
