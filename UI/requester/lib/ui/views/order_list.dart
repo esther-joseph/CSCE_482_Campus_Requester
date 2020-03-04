@@ -1,17 +1,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:requester/ui/widgets/now_delivery_list.dart';
-import 'package:requester/ui/widgets/past_delivery_list.dart';
+import 'package:requester/ui/widgets/now_order_list.dart';
+import 'package:requester/ui/widgets/past_order_list.dart';
 
 import '../widgets/bottom_navbar.dart';
 
-class DeliveryListView extends StatefulWidget {
+class OrderListView extends StatefulWidget {
   @override
-  _DeliveryListViewState createState() => _DeliveryListViewState();
+  _OrderListViewState createState() => _OrderListViewState();
 }
 
-class _DeliveryListViewState extends State<DeliveryListView> with SingleTickerProviderStateMixin {
+class _OrderListViewState extends State<OrderListView> with SingleTickerProviderStateMixin {
 
   TabController controller;
 
@@ -27,7 +27,7 @@ class _DeliveryListViewState extends State<DeliveryListView> with SingleTickerPr
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff800000),
-        title: Text('Delivery List'),
+        title: Text('Order List'),
         actions: <Widget>[
           Container(
             padding: const EdgeInsets.only(right: 15),
@@ -56,8 +56,8 @@ class _DeliveryListViewState extends State<DeliveryListView> with SingleTickerPr
       body: TabBarView(
         controller: controller,
         children: <Widget>[
-          NowDeliveryList(),
-          PastDeliveryList(),
+          NowOrderList(),
+          PastOrderList(),
         ]),
         bottomNavigationBar: BottomNabar(),
     );

@@ -29,12 +29,7 @@ class _NowDeliveryListState extends State<NowDeliveryList> {
         //onModelReady: (model) => model.fetchPosts(),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Colors.white,
-              // floatingActionButton: FloatingActionButton(
-              //   backgroundColor: Theme.of(context).primaryColor,
-              //   child:
-              //       !model.busy ? Icon(Icons.add) : CircularProgressIndicator(),
-              //   onPressed: model.navigateToCreateView,
-              // ),
+
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -119,6 +114,7 @@ class _NowDeliveryListState extends State<NowDeliveryList> {
                                                   style: TextStyle(fontSize: 12),
                                                   ),)
                                                 ),
+                                                SizedBox(width: 5),
                                                 SizedBox(
                                                 width: 100,
                                                 height: 30,
@@ -142,6 +138,7 @@ class _NowDeliveryListState extends State<NowDeliveryList> {
                                                   style: TextStyle(fontSize: 12),
                                                   ),
                                                 )),
+                                                SizedBox(width: 5),
                                                 SizedBox(
                                                 width: 100,
                                                 height: 30,

@@ -1,4 +1,5 @@
 import 'package:requester/ui/shared/ui_helpers.dart';
+import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/busy_button.dart';
 import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/ui/widgets/text_link.dart';
@@ -15,6 +16,7 @@ class LoginView extends StatelessWidget {
     return ViewModelProvider<LoginViewModel>.withConsumer(
       viewModel: LoginViewModel(),
       builder: (context, model, child) => Scaffold(
+          appBar: BaseAppbar.getAppBar('Log In'),
           backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -26,7 +28,7 @@ class LoginView extends StatelessWidget {
                 SizedBox(
                   height: 150,
                   //TODO Have to add Icon on the images folder
-                  child: Image.asset('assets/images/title.png'),
+                  child: Image.asset('assets/images/tamu_logo.png')
                 ),
                 InputField(
                   placeholder: 'Email',

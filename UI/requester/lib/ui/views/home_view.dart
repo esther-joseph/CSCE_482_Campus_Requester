@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/bottom_navbar.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,6 +16,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: BaseAppbar.getAppBar('Post List'),
+
       body: Stack(
         children: <Widget>[
           GoogleMap(

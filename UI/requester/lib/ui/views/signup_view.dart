@@ -1,4 +1,5 @@
 import 'package:requester/ui/shared/ui_helpers.dart';
+import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/busy_button.dart';
 import 'package:requester/ui/widgets/input_field.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class SignUpView extends StatelessWidget {
     return ViewModelProvider<SignUpViewModel>.withConsumer(
       viewModel: SignUpViewModel(),
       builder: (context, model, child) => Scaffold(
+        appBar: BaseAppbar.getAppBar('Sign Up'),
+
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Column(
