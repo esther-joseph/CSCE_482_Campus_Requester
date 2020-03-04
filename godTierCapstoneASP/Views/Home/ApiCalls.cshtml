@@ -5,6 +5,7 @@
 
 <h1>ApiCalls</h1>
 
+<!-- Home Controller Table -->
 <table class="infoTable">
     <tr>
         <th colspan="5">
@@ -87,6 +88,7 @@
     </tr>
 </table>
 
+<!-- Login Controller Table -->
 <table class="infoTable">
     <tr>
         <th colspan="5">
@@ -154,12 +156,15 @@
     </tr>
 </table>
 
+<!-- Post Controller Table -->
 <table class="infoTable">
+    <!-- First header row -->
     <tr>
         <th colspan="5">
             Posts Controller
         </th>
     </tr>
+    <!-- Second header row -->
     <tr>
         <th>
             URL
@@ -177,6 +182,8 @@
             Description
         </th>
     </tr>
+
+    <!-- /Posts/Details/ -->
     <tr>
         <td>
             /Posts/Details
@@ -193,11 +200,15 @@
             PostModel - if successful - with status code 200
             <br />
             if id is null or invalid - HTTP 404 (Not Found)
+            <br />
+            if the post is not open and was not associated with the user - HTTP 401 (Unauthorized)
         </td>
         <td>
-            Takes in a post ID and returns the PostModel with status code 200 if the ID is a valid ID, HTTP-404 otherwise.
+            Takes in a post ID and returns the PostModel with status code 200 if the ID is a valid ID, HTTP-404 if not found or 401 if requesting an unopened post unassociated with the user.
         </td>
     </tr>
+
+    <!-- /Posts/Create -->
     <tr>
         <td>
             /Posts/Create
@@ -219,12 +230,14 @@
             Creates a post based on the given Post model and returns the id of the post that's created with status code 200. If the given model is invalid, returns Bad Request (400) status code.
         </td>
     </tr>
+
+    <!-- /Posts/View Recent -->
     <tr>
         <td>
             /Posts/ViewRecent
         </td>
         <td>
-            POST
+            GET
             <br />
             Authorized
         </td>
@@ -235,9 +248,11 @@
             array of PostModel
         </td>
         <td>
-            Returns an array of PostModel with at most 'count' elements sorted in descending order of creation date. Only returns most recent 'count' posts that are open (not accpeted or completed).
+            Returns an array of PostModel with at most 'count' elements sorted in descending order of creation date. Only returns most recent 'count' posts that are open (not accpeted or completed) and not created by the current user.
         </td>
     </tr>
+
+    <!-- /Posts/Accept -->
     <tr>
         <td>
             /Posts/Accept
@@ -258,9 +273,11 @@
             HTTP - 400 otherwise
         </td>
         <td>
-            Marks the post with the given id as accepted and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not open, then returns HTTP 400 (Bad Request).
+            Marks the post with the given id as accepted and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not open, then returns HTTP 400 (Bad Request). If the post is open and was created by the current user, then returns HTTP 400 (Bad Request).
         </td>
     </tr>
+
+    <!-- /Posts/Complete -->
     <tr>
         <td>
             /Posts/Complete
@@ -278,12 +295,18 @@
             <br />
             HTTP - 404 if not found
             <br />
+            HTTP - 401 if user doesn't have permissions
+            <br />
             HTTP - 400 otherwise
         </td>
         <td>
-            Marks the post with the given id as completed and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not accepted, then returns HTTP 400 (Bad Request).
+            Marks the post with the given id as completed and returns status code 200 (ok) upon success. If no post exists with that id then returns 404 (Not found). If the given id is a post that exists, but is not accepted, then returns HTTP 400 (Bad Request). If it is accepted, but the current user is neither the creator nor the acceptor, then returns 401 (Unauthorized).
+            <br />
+            As of now, the user who delivers is the same as the user who accepts.
         </td>
     </tr>
+
+    <!-- /Posts/Edit -->
     <tr>
         <td>
             /Posts/Edit
@@ -299,12 +322,16 @@
         <td>
             HTTP - 200 (Ok) on success
             <br />
+            HTTP - 401 (Unauthorized) if user doesn't have permissions
+            <br />
             HTTP - 400 (Bad Request) otherwise
         </td>
         <td>
-            Updates an existing post with new information. Returns status code 200 (Ok) upon success. if the post with given id doesn't exists or if that post is not open, then returns status code 400 (Bad Request).
+            Updates an existing post with new information. Returns status code 200 (Ok) upon success. if the post with given id doesn't exists or if that post is not open, then returns status code 400 (Bad Request). If the post was not created by the current user then returns 401 (Unauthorized).
         </td>
     </tr>
+
+    <!-- /Posts/Delete -->
     <tr>
         <td>
             /Posts/Delete
@@ -320,10 +347,13 @@
         <td>
             HTTP - 200 (Ok) on success
             <br />
+            HTTP - 401 (Unauthorized) if user doesn't have permissions
+            <br />
             HTTP - 400 (Bad Request) otherwise
         </td>
         <td>
-            Deletes the post with the given id. if the id is null or a post with that id doesn't exist or if the post is not open or expired, then returns 400 (Bad Request).
+            Deletes the post with the given id. if the id is null or a post with that id doesn't exist or if the post is not open or expired, then returns 400 (Bad Request). If the post was not created by the current user, then returns 401 (Unauthorized).
         </td>
     </tr>
+
 </table>

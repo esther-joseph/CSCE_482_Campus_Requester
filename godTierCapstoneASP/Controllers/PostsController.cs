@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using godTierCapstoneASP.Models;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace godTierCapstoneASP.Controllers
 {
@@ -37,6 +38,21 @@ namespace godTierCapstoneASP.Controllers
                 return NotFound();
             }
 
+            if (post.status != PostStatus.Open)
+            {
+                int currentUser = getCurrentUserId();
+                bool authorized = false;
+                if (post.createdBy == currentUser)
+                    authorized = true;
+                else if (post.acceptedBy != null && post.acceptedBy == currentUser)
+                    authorized = true;
+                else if (post.deliveredBy != null && post.deliveredBy == currentUser)
+                    authorized = true;
+
+                if(authorized == false)
+                    return Unauthorized();
+            }
+
             return Ok(post);
         }
 
@@ -46,6 +62,7 @@ namespace godTierCapstoneASP.Controllers
         {
             if (ModelState.IsValid)
             {
+                post.createdBy = getCurrentUserId();
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 
@@ -58,30 +75,7 @@ namespace godTierCapstoneASP.Controllers
         [Authorize]
         public JsonResult ViewRecent(int count=50)
         {
-            return Json(_context.Posts.Where(p => p.status == PostStatus.Open).OrderByDescending(p => p.id).Take(count));
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> Complete(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            PostModel post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
-
-            if (post == null)
-                return NotFound();
-
-            if (post.status == PostStatus.Accepted)
-            {
-                post.status = PostStatus.Completed;
-                _context.Posts.Update(post);
-                await _context.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return BadRequest();
+            return Json(_context.Posts.Where(p => p.status == PostStatus.Open && p.createdBy != getCurrentUserId()).OrderByDescending(p => p.id).Take(count));
         }
 
         [HttpPost]
@@ -98,7 +92,37 @@ namespace godTierCapstoneASP.Controllers
 
             if (post.status == PostStatus.Open)
             {
+                if (post.createdBy == getCurrentUserId())
+                    return BadRequest();
                 post.status = PostStatus.Accepted;
+                post.acceptedBy = getCurrentUserId();
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return BadRequest();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Complete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            PostModel post = await _context.Posts.FirstOrDefaultAsync(p => p.id == id);
+
+            if (post == null)
+                return NotFound();
+
+            if (post.status == PostStatus.Accepted)
+            {
+                int currentUser = getCurrentUserId();
+                if (post.acceptedBy != currentUser && post.createdBy != currentUser)
+                    return Unauthorized();
+                post.status = PostStatus.Completed;
+                post.deliveredBy = post.acceptedBy;
                 _context.Posts.Update(post);
                 await _context.SaveChangesAsync();
                 return Ok();
@@ -117,6 +141,8 @@ namespace godTierCapstoneASP.Controllers
                 return BadRequest();
             if (existingPost.status != PostStatus.Open)
                 return BadRequest();
+            if (existingPost.createdBy != getCurrentUserId())
+                return Unauthorized();
 
             existingPost.details = post.details;
 
@@ -141,10 +167,22 @@ namespace godTierCapstoneASP.Controllers
             if (post.status != PostStatus.Open && post.status != PostStatus.Expired)
                 return BadRequest();
 
+            if (post.createdBy != getCurrentUserId())
+                return Unauthorized();
+
             post.status = PostStatus.Deleted;
             _context.Update(post);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        /// <summary>
+        /// returns the id of the currently signed in user
+        /// </summary>
+        /// <returns></returns>
+        private int getCurrentUserId()
+        {
+            return Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
     }
 }

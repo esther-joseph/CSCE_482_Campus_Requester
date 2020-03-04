@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using godTierCapstoneASP.Models;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Security.Claims;
+
 
 namespace godTierCapstoneASP.Controllers
 {
@@ -22,6 +25,8 @@ namespace godTierCapstoneASP.Controllers
         public ActionResult Index()
         {
             ViewData["GoogleClientId"] = _configuration.GetConnectionString("GoogleClientId");
+            //string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //ViewData["User"] = userIdString;
             return View();
         }
 
