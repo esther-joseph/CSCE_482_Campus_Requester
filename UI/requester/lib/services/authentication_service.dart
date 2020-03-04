@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationService {
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
+
   Future loginWithEmail(
       {@required String email, @required String password}) async {
     try {

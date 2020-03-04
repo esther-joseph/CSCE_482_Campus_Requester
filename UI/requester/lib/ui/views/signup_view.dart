@@ -49,6 +49,7 @@ class SignUpView extends StatelessWidget {
                 controller: passwordController,
               ),
               verticalSpaceMedium,
+
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
