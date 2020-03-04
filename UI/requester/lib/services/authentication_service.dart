@@ -3,11 +3,14 @@ import 'package:http/http.dart' as http;
 
 class AuthenticationService {
   Future loginWithEmail(
-      {@required String email, @required String password}) async {
-    try {
-      //var user = await signIn(email, password)
+      {@required String username, @required String password}) async {
+    var url = 'https://pidgin.azurewebsites.net/CustomLogin/SignIn';
 
-      //return user != null;
+    try {
+      var res = await http
+          .post(url, body: {'username': username, 'password': password});
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
     } catch (e) {
       return e.message;
     }
@@ -17,7 +20,16 @@ class AuthenticationService {
       {@required String email,
       @required String password,
       @required String userName}) async {
+    var url = 'https://pidgin.azurewebsites.net/CustomLogin/Register';
+
     try {
+      var res = await http.post(url,
+          body: {'email': email, 'password': password, 'username': userName});
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+
+      return res.statusCode == 200;
+
       // String token = await signUp(email, password, userName)
       //return user != null;
     } catch (e) {

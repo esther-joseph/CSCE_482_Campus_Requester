@@ -29,18 +29,14 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Open Sans',
               bodyColor: Colors.black,
               displayColor: Colors.black)),
-
       builder: (context, child) => Navigator(
         key: locator<DialogService>().dialogNavigationKey,
         onGenerateRoute: (settings) => MaterialPageRoute(
             builder: (context) => DialogManager(child: child)),
       ),
       navigatorKey: locator<NavigationService>().navigationKey,
-      // home: ChangeNotifierProvider(
-      //   create: (context) => PlaceListViewModel(),
-      //   child: HomeView()
-      // ),
-      home: LoginView(),
+      home: ChangeNotifierProvider(
+          create: (context) => PlaceListViewModel(), child: HomeView()),
       onGenerateRoute: generateRoute,
     );
   }

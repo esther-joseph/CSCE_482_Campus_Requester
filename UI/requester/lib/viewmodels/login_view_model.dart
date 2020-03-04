@@ -16,30 +16,28 @@ class LoginViewModel extends BaseModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   Future signIn({
-    @required String email,
+    @required String username,
     @required String password,
   }) async {
     setBusy(true);
 
-    // var result = await _authenticationService.loginWithEmail(
-    //     email: email, password: password);
+    var result = await _authenticationService.loginWithEmail(
+        username: username, password: password);
 
     setBusy(false);
 
-    _navigationService.navigateTo(HomeViewRoute);
-
-    // if (result is bool) {
-    //   if (result) {
-    //     _navigationService.navigateTo(HomeViewRoute);
-    //   } else {
-    //     await _dialogService.showDialog(
-    //         title: 'Sign In Failure',
-    //         description: 'Sign In failure, Pleare try again');
-    //   }
-    // } else {
-    //   await _dialogService.showDialog(
-    //       title: 'Sign In Failure', description: result);
-    // }
+    if (result is bool) {
+      if (result) {
+        _navigationService.navigateTo(HomeViewRoute);
+      } else {
+        await _dialogService.showDialog(
+            title: 'Sign In Failure',
+            description: 'Sign In failure, Pleare try again');
+      }
+    } else {
+      await _dialogService.showDialog(
+          title: 'Sign In Failure', description: result);
+    }
   }
 
   void navigateToSignUp() {

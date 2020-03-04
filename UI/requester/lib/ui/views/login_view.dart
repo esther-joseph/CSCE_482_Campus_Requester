@@ -8,7 +8,7 @@ import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/viewmodels/login_view_model.dart';
 
 class LoginView extends StatelessWidget {
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -26,13 +26,12 @@ class LoginView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 150,
-                  //TODO Have to add Icon on the images folder
-                  child: Image.asset('assets/images/tamu_logo.png')
-                ),
+                    height: 150,
+                    //TODO Have to add Icon on the images folder
+                    child: Image.asset('assets/images/tamu_logo.png')),
                 InputField(
-                  placeholder: 'Email',
-                  controller: emailController,
+                  placeholder: 'Username',
+                  controller: usernameController,
                 ),
                 verticalSpaceSmall,
                 InputField(
@@ -52,7 +51,7 @@ class LoginView extends StatelessWidget {
                         // TODO: Perform login here
 
                         model.signIn(
-                            email: emailController.text,
+                            username: usernameController.text,
                             password: passwordController.text);
                       },
                     )

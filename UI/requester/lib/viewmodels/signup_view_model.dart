@@ -26,17 +26,17 @@ class SignUpViewModel extends BaseModel {
 
     setBusy(false);
 
-    // if (result is bool) {
-    //   if (result) {
-    //     _navigationService.navigateTo(HomeViewRoute);
-    //   } else {
-    //     await _dialogService.showDialog(
-    //         title: 'Sign Up Failure',
-    //         description: 'Sign up failure, Pleare try again');
-    //   }
-    // } else {
-    //   await _dialogService.showDialog(
-    //       title: 'Sign Up Failure', description: result);
-    // }
+    if (result is bool) {
+      if (result) {
+        _navigationService.navigateTo(LoginViewRoute);
+      } else {
+        await _dialogService.showDialog(
+            title: 'Sign Up Failure',
+            description: 'Sign up failure, Pleare try again');
+      }
+    } else {
+      await _dialogService.showDialog(
+          title: 'Sign Up Failure', description: result);
+    }
   }
 }
