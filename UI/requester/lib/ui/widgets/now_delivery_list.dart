@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 
 import 'package:requester/models/post.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
-import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -17,20 +16,20 @@ class ItemModel {
   ItemModel({this.isExpanded: false, this.post});
 }
 
-class PostListView extends StatefulWidget {
+class NowDeliveryList extends StatefulWidget {
   @override
-  _PostListViewState createState() => _PostListViewState();
+  _NowDeliveryListState createState() => _NowDeliveryListState();
 }
 
-class _PostListViewState extends State<PostListView> {
+class _NowDeliveryListState extends State<NowDeliveryList> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PostListViewModel>.withConsumer(
         viewModel: PostListViewModel(),
         //onModelReady: (model) => model.fetchPosts(),
         builder: (context, model, child) => Scaffold(
-              appBar: BaseAppbar.getAppBar('Post List'),
-              
+              backgroundColor: Colors.white,
+
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -88,34 +87,87 @@ class _PostListViewState extends State<PostListView> {
                                               fontSize: 13,
                                             ),
                                           ),
-                                          verticalSpace(5),
-                                          SizedBox(
-                                            width: 80,
-                                            height: 30,
-                                            child: RaisedButton(onPressed: () {
-                                              final snackBar = SnackBar(
-                                                content: Text('You Accepted!'),
-                                                action: SnackBarAction(
-                                                  label: 'Undo',
-                                                  onPressed: () {
-                                                    // Some code to undo the change.
-                                                  },
-                                                ),
-                                              );
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 100,
+                                                height: 30,
+                                                child: RaisedButton(onPressed: () {
+                                                  final snackBar = SnackBar(
+                                                    content: Text('You sent a message!'),
+                                                    // action: SnackBarAction(
+                                                    //   label: 'Undo',
+                                                    //   onPressed: () {
+                                                    //     // Some code to undo the change.
+                                                    //   },
+                                                    // ),
+                                                  );
 
-                                              // Find the Scaffold in the widget tree and use
-                                              // it to show a SnackBar.
-                                              Scaffold.of(context).showSnackBar(snackBar);
-                                            },
-                                            child: Text(
-                                              'Accept',
-                                              style: TextStyle(fontSize: 15),
-                                            ),)
+                                                  // Find the Scaffold in the widget tree and use
+                                                  // it to show a SnackBar.
+                                                  Scaffold.of(context).showSnackBar(snackBar);
+                                                  },
+                                                child: Text(
+                                                  'On the way',
+                                                  style: TextStyle(fontSize: 12),
+                                                  ),)
+                                                ),
+                                                SizedBox(width: 5),
+                                                SizedBox(
+                                                width: 100,
+                                                height: 30,
+                                                child: RaisedButton(onPressed: () {
+                                                  final snackBar = SnackBar(
+                                                    content: Text('You cancled the delivery'),
+                                                    action: SnackBarAction(
+                                                      label: 'Undo',
+                                                      onPressed: () {
+                                                        // Some code to undo the change.
+                                                      },
+                                                    ),
+                                                  );
+
+                                                  // Find the Scaffold in the widget tree and use
+                                                  // it to show a SnackBar.
+                                                  Scaffold.of(context).showSnackBar(snackBar);
+                                                },
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(fontSize: 12),
+                                                  ),
+                                                )),
+                                                SizedBox(width: 5),
+                                                SizedBox(
+                                                width: 100,
+                                                height: 30,
+                                                child: RaisedButton(onPressed: () {
+                                                  // final snackBar = SnackBar(
+                                                  //   content: Text('You cancled the delivery'),
+                                                  //   action: SnackBarAction(
+                                                  //     label: 'Undo',
+                                                  //     onPressed: () {
+                                                  //       // Some code to undo the change.
+                                                  //     },
+                                                  //   ),
+                                                  // );
+
+                                                  // // Find the Scaffold in the widget tree and use
+                                                  // // it to show a SnackBar.
+                                                  // Scaffold.of(context).showSnackBar(snackBar);
+                                                },
+                                                child: Text(
+                                                  'Chat',
+                                                  style: TextStyle(fontSize: 12),
+                                                  ),
+                                                )),
+                                                SizedBox(height: 20),
+                                            ]
                                           )
-                                          
-                                        ],
+                                        ]
+                                      )
                                       ),
-                                    ),
                                     headerBuilder: (context, isExpanded) {
                                       return Container(
                                           padding: EdgeInsets.all(10),
@@ -150,7 +202,6 @@ class _PostListViewState extends State<PostListView> {
                   ],
                 ),
               ),
-              bottomNavigationBar: BottomNabar(),
             ));
   }
 

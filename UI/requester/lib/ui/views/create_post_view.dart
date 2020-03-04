@@ -2,6 +2,7 @@ import 'package:provider_architecture/viewmodel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
+import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/viewmodels/create_post_view_model.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -41,16 +42,12 @@ class _CreatePostViewState extends State<CreatePostView> {
         //   backgroundColor:
         //       !model.busy ? Theme.of(context).primaryColor : Colors.grey[600],
         // ),
+        appBar: BaseAppbar.getAppBar('Create Post'),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              verticalSpace(40),
-              Text(
-                'Create Post',
-                style: TextStyle(fontSize: 26),
-              ),
               verticalSpaceMedium,
               InputField(
                 placeholder: 'Item',
@@ -114,6 +111,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                 color: Colors.white,
               ),
               verticalSpace(20),
+              
               InputField(
                   placeholder: 'Service Fee',
                   controller: serviceFeeController,
