@@ -32,16 +32,36 @@ namespace godTierCapstoneASP
         {
             services.AddDbContext<PostContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CustomLoginContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
             services.AddSingleton<IConfiguration>(Configuration);
             godTierCapstoneASP.Controllers.LoginController._configuration = Configuration;
+            godTierCapstoneASP.Controllers.CustomLoginController._configuration = Configuration;
 
 
-            var key = Encoding.ASCII.GetBytes(Configuration.GetConnectionString("GoogleClientSecret"));
+            byte[] key = Encoding.ASCII.GetBytes(Configuration.GetConnectionString("GoogleClientSecret"));
 
-            #region AddGoogle authentication
             services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            /*
+            #region AddGoogle authentication
+            services.AddAuthentication(options =>s
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
@@ -94,6 +114,8 @@ namespace godTierCapstoneASP
                 };
             });
             #endregion
+            */
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
