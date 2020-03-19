@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/services/dialog_service.dart';
-import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/views/home_view.dart';
 import 'package:requester/ui/views/login_view.dart';
 import 'package:requester/ui/views/order_list.dart';
@@ -36,9 +35,11 @@ class MyApp extends StatelessWidget {
             builder: (context) => DialogManager(child: child)),
       ),
       navigatorKey: locator<NavigationService>().navigationKey,
-      home: ChangeNotifierProvider(
-          create: (context) => PlaceListViewModel(), child: HomeView()),
-      // home: LoginView(),
+      // home: ChangeNotifierProvider(
+      //   create: (context) => PlaceListViewModel(),
+      //   child: HomeView()
+      // ),
+      home: SplashView(),
       onGenerateRoute: generateRoute,
     );
   }

@@ -16,19 +16,20 @@ class LoginView extends StatelessWidget {
     return ViewModelProvider<LoginViewModel>.withConsumer(
       viewModel: LoginViewModel(),
       builder: (context, model, child) => Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: BaseAppbar.getAppBar('Log In'),
           backgroundColor: Colors.white,
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                    height: 150,
-                    //TODO Have to add Icon on the images folder
-                    child: Image.asset('assets/images/tamu_logo.png')),
+                // SizedBox(
+                //     height: 150,
+                //     //TODO Have to add Icon on the images folder
+                //     child: Image.asset('assets/images/tamu_logo.png')),
                 InputField(
                   placeholder: 'Username',
                   controller: usernameController,
