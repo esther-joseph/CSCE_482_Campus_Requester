@@ -1,9 +1,11 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-import tensorflow as tf
+import numpy
+import matplotlib.pyplot as plt
+import math
+from keras.models import Sequential
+from keras.layers import Dense
 import pandas as pd 
-import numpy as np
 import pyodbc 
 
 server = 'pidginserver.database.windows.net'
@@ -21,43 +23,88 @@ for row in cursor:
     row_to_list = [elem for elem in row]
     cursor_list.append(row_to_list)
 
-df = pd.DataFrame(data = cursor_list, columns = ['Info', 'Price'])
-#print(df)
+df_orders = pd.DataFrame(data = cursor_list, columns = ['Info', '9_22_19', '12_23_19', '1_21_20', '2_17_20', '3_18_20'])
+#print(df_orders)
 
-df.head()
-df.dtypes
+# convert an array of values into a dataset matrix
+def create_dataset(dataset, look_back=1):
+	dataX, dataY = [], []
+	for i in range(len(dataset)-look_back-1):
+		a = dataset[i:(i+look_back), 0]
+		dataX.append(a)
+		dataY.append(dataset[i + look_back, 0])
+	return numpy.array(dataX), numpy.array(dataY)
 
-df['Info'] = pd.Categorical(df['Info'])
-df['Info'] = df.Info.cat.codes
-df.head()
+# load the dataset
+dataframe = df_orders.drop(['Info'], axis=1)
+dataset = dataframe.values
+dataset = dataset.astype('float32')
 
-price = df.pop('Price')
-dataset = tf.data.Dataset.from_tensor_slices((df.values, price.values))
 
-#for feat, pric in dataset.take(5):
-#  print ('Features: {}, Target: {}'.format(feat, pric))
+# split into train and test sets
+train_size = int(len(dataset) * 0.67)
+test_size = len(dataset) - train_size
+train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 
-tf.constant(df['Info'])
-train_dataset = dataset.shuffle(len(df)).batch(1)
 
-def get_compiled_model():
-  model = tf.keras.Sequential([
-    tf.keras.layers.Dense(10, activation='relu'),
-    tf.keras.layers.Dense(10, activation='relu'),
-    tf.keras.layers.Dense(1)
-  ])
+# reshape dataset
+look_back = 3
+trainX, trainY = create_dataset(train, look_back)
+testX, testY = create_dataset(test, look_back)
 
-  model.compile(optimizer='adam',
-                loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                metrics=['accuracy'])
-  return model
 
-model = get_compiled_model()
-model.fit(train_dataset, verbose = 0, epochs=15)
+# create and fit Multilayer Perceptron model
+model = Sequential()
+model.add(Dense(12, input_dim=look_back, activation='relu'))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(trainX, trainY, epochs=400, batch_size=2, verbose=0)
 
-def predict():
-    predictions = model.predict(train_dataset, batch_size=None, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
-    mean_prediction = np.sum(predictions)
-    print(mean_prediction)
 
-pred = predict()
+# Estimate model performance
+trainScore = model.evaluate(trainX, trainY, verbose=0)
+print('Predicted Score from Train: %.2f' % trainScore )
+
+testScore = model.evaluate(testX, testY, verbose=0)
+print('Predicted Score from Test: %.2f' % testScore)
+
+# generate predictions for training
+trainPredict = model.predict(trainX)
+trp = numpy.sum(trainPredict)
+print(trp)
+testPredict = model.predict(testX)
+tsp = numpy.sum(testPredict)
+print(tsp)
+
+# shift train predictions for plotting
+trainPredictPlot = numpy.empty_like(dataset)
+trainPredictPlot[:, :] = numpy.nan
+trainPredictPlot[look_back:len(trainPredict)+look_back, :] = trainPredict
+
+
+# shift test predictions for plotting
+testPredictPlot = numpy.empty_like(dataset)
+testPredictPlot[:, :] = numpy.nan
+testPredictPlot[len(trainPredict)+(look_back*2)+1:len(dataset)-1, :] = testPredict
+
+
+# plot baseline and predictions
+plt.plot(dataset)
+plt.plot(trainPredictPlot)
+plt.plot(testPredictPlot)
+#plt.show()
+
+
+last_column_total = numpy.sum(df_orders.iloc[:,-1])
+#print(last_column_total)
+
+def price_prediction():
+	pp = (trainScore + trp + testScore) - tsp
+	while pp < last_column_total:
+		pp = (trainScore + trp + testScore) - tsp
+		if pp >= last_column_total:
+			break
+	print(pp)
+
+pred = price_prediction()
