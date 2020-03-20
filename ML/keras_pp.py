@@ -57,7 +57,7 @@ model.fit(train_dataset, verbose = 0, epochs=15)
 
 def predict():
     predictions = model.predict(train_dataset, batch_size=None, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
-    mean_prediction = np.mean(predictions)
+    mean_prediction = np.sum(predictions)
     print(mean_prediction)
 
 pred = predict()
