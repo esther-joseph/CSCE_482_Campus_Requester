@@ -1,4 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 import pandas as pd 
 import numpy as np
@@ -51,7 +53,7 @@ def get_compiled_model():
   return model
 
 model = get_compiled_model()
-model.fit(train_dataset, epochs=15)
+model.fit(train_dataset, verbose = 0, epochs=15)
 
 def predict():
     predictions = model.predict(train_dataset, batch_size=None, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
