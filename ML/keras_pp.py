@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
 import pandas as pd 
+import numpy as np
 import pyodbc 
 
 server = 'pidginserver.database.windows.net'
@@ -31,8 +32,8 @@ df.head()
 price = df.pop('Price')
 dataset = tf.data.Dataset.from_tensor_slices((df.values, price.values))
 
-for feat, pric in dataset.take(5):
-  print ('Features: {}, Target: {}'.format(feat, pric))
+#for feat, pric in dataset.take(5):
+#  print ('Features: {}, Target: {}'.format(feat, pric))
 
 tf.constant(df['Info'])
 train_dataset = dataset.shuffle(len(df)).batch(1)
@@ -52,4 +53,9 @@ def get_compiled_model():
 model = get_compiled_model()
 model.fit(train_dataset, epochs=15)
 
-model.predict()
+def predict():
+    predictions = model.predict(train_dataset, batch_size=None, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
+    mean_prediction = np.mean(predictions)
+    print(mean_prediction)
+
+pred = predict()
