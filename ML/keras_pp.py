@@ -105,6 +105,6 @@ def price_prediction():
 		pp = (trainScore + trp + testScore) - tsp
 		if pp >= last_column_total:
 			break
-	print(pp)
+	print(round(pp,2))
 
 pred = price_prediction()
