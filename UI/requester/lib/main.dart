@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
             builder: (context) => DialogManager(child: child)),
       ),
       navigatorKey: locator<NavigationService>().navigationKey,
-      // home: ChangeNotifierProvider(
-      //   create: (context) => PlaceListViewModel(),
-      //   child: HomeView()
-      // ),
-      home: SplashView(),
+      home: ChangeNotifierProvider(
+        create: (context) => PlaceListViewModel(),
+        child: HomeView()
+      ),
+//      home: SplashView(),
       onGenerateRoute: generateRoute,
     );
   }

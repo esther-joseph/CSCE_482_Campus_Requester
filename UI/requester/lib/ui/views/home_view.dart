@@ -8,6 +8,7 @@ import 'package:requester/ui/widgets/bottom_navbar.dart';
 import 'package:requester/viewmodels/place_list_view_model.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
 import 'package:requester/ui/widgets/input_field.dart';
+import 'package:requester/ui/widgets/place_list.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -61,13 +62,31 @@ class _HomeViewState extends State<HomeView> {
           child: TextField(
             onSubmitted: (value) {
               vm.fetchPlacesByKeywordAndPosition(
-                  value, _currentPosition.latitude, _currentPosition.longitude);
+                   value, _currentPosition.latitude, _currentPosition.longitude);
             },
             decoration: InputDecoration(
                 labelText: "Search here",
                 fillColor: Colors.white,
                 filled: true),
           ),
+        ),
+        Visibility(
+          visible: vm.places.length > 0 ? true : false,
+          child: SafeArea(
+                child: Align(
+                alignment: Alignment.bottomLeft,
+                child: FlatButton(
+                child: Text("Show List", style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => PlaceList(places: vm.places)
+                  );
+                },
+                color: Colors.grey,
+              ),
+            ),
+          )
         )
       ]),
     );

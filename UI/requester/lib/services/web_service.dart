@@ -15,7 +15,7 @@ class WebService {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       final Iterable results = jsonResponse["results"];
-      print(results.map((place) => Place.fromJson(place)).toList());
+      //print(results.map((place) => Place.fromJson(place)).toList());
       return results.map((place) => Place.fromJson(place)).toList();
     } else {
       throw Exception("Unable to perform request");

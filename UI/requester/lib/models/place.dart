@@ -14,6 +14,7 @@ class Place {
 
     return Place(
         placeID: json["place_id"],
+        name: json["name"],
         latitude: location["lat"],
         longitude: location["lng"],
         photoURL: photos.isEmpty == null

@@ -11,7 +11,7 @@ class PlaceViewModel {
     return this._place.placeID;
   }
 
-  String get photURL {
+  String get photoURL {
     return this._place.photoURL;
   }
 
