@@ -49,6 +49,12 @@ class _CreatePostViewState extends State<CreatePostView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               verticalSpaceMedium,
+              TextField(
+                decoration: InputDecoration(
+                  //TODO: get location name from place object
+                  labelText: 'location'
+                ),
+              ),
               InputField(
                 placeholder: 'Item',
                 controller: itemController,

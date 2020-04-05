@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:requester/constants/route_names.dart';
+import 'package:requester/locator.dart';
+import 'package:requester/services/navigation_service.dart';
 import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/bottom_navbar.dart';
 import 'package:requester/viewmodels/place_list_view_model.dart';
@@ -45,6 +48,12 @@ class _HomeViewState extends State<HomeView> {
         zoom: 14)));
   }
 
+  void _selectLocation(PlaceViewModel vm) {
+    final NavigationService _navigationService = locator<NavigationService>();
+    print(vm.name);
+    _navigationService.navigateTo(CreatePostViewRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<PlaceListViewModel>(context);
@@ -80,7 +89,10 @@ class _HomeViewState extends State<HomeView> {
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => PlaceList(places: vm.places)
+                    builder: (context) => PlaceList(
+                      places: vm.places,
+                      onSelected: _selectLocation,
+                      ),
                   );
                 },
                 color: Colors.grey,

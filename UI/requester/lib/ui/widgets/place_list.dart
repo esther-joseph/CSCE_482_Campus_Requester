@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
+import 'package:requester/viewmodels/create_post_view_model.dart';
 import 'package:requester/utils/url_helper.dart';
 
 class PlaceList extends StatelessWidget{
+
   final List<PlaceViewModel> places;
 
-  PlaceList({this.places});
+  Function(PlaceViewModel) onSelected;
+
+  PlaceList({this.places,this.onSelected});
 
   Widget build(BuildContext context){
 
@@ -21,7 +25,8 @@ class PlaceList extends StatelessWidget{
         return ListTile(
           onTap: () {
             //go to create post
-          }
+            this.onSelected(place);
+          },
           leading: Container(
             width: 100,
             height: 100,
