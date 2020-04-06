@@ -54,6 +54,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                   //TODO: get location name from place object
                   labelText: 'location'
                 ),
+                enabled: false,
               ),
               InputField(
                 placeholder: 'Item',

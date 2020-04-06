@@ -20,6 +20,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final menuController = TextEditingController();
+  final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   Completer<GoogleMapController> _controller = Completer();
   Position _currentPosition;
@@ -30,13 +31,38 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Set<Marker> _getPlaceMarkers(List<PlaceViewModel> places) {
-    return places.map((place) {
-      return Marker(
-          markerId: MarkerId(place.placeId),
-          icon: BitmapDescriptor.defaultMarker,
-          infoWindow: InfoWindow(title: place.name),
-          position: LatLng(place.latitude, place.longitude));
-    }).toSet();
+    //TODO: add a read from our database and use those locations to add markers
+
+    setState(() {
+        markers.clear();
+    });
+
+    var i = 0;
+    for(final place in places){
+        String mar = i.toString();
+        final MarkerId markerId = MarkerId(mar);
+
+        final Marker marker = Marker(
+        markerId: markerId,
+        position: LatLng(place.latitude, place.longitude,),
+        infoWindow: InfoWindow(
+          title: place.name,
+          snippet: '*'),
+        );
+
+        setState(() {
+        markers[markerId] = marker;
+        });
+        i++;
+
+        //print(marker);
+    }
+
+    for (final marker in markers.values.toSet()){
+      print(marker);
+    }
+
+    return markers.values.toSet();
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
@@ -61,11 +87,11 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       body: Stack(children: <Widget>[
         GoogleMap(
-          markers: _getPlaceMarkers(vm.places),
           myLocationEnabled: true,
           onMapCreated: _onMapCreated,
           initialCameraPosition:
               CameraPosition(target: LatLng(45.521563, -122.677433), zoom: 14),
+          markers: _getPlaceMarkers(vm.places),
         ),
         SafeArea(
           child: TextField(
