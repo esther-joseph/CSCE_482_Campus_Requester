@@ -7,7 +7,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 import pandas as pd 
 import pyodbc 
+from flask import Flask
 
+#set up a way for python to extract SQL database
 server = 'pidginserver.database.windows.net'
 database = 'pidgin_2' #database for prices from orders
 username = 'notpaul'
@@ -18,13 +20,44 @@ cursor = cnxn.cursor()
 cursor.execute("SELECT * FROM dbo.OrderDetails$")
 row = cursor.fetchone()
 
+#extract raw data to python list
 cursor_list = []
 for row in cursor:
     row_to_list = [elem for elem in row]
     cursor_list.append(row_to_list)
 
-df_orders = pd.DataFrame(data = cursor_list, columns = ['Info', '9_22_19', '12_23_19', '1_21_20', '2_17_20', '3_18_20'])
+#organize list to pandas dataframe
+df_orders = pd.DataFrame(data = cursor_list, columns = ['Info', '1', '2', '3', '4', '5'])
 #print(df_orders)
+
+#expand price history of each item matching in a column
+def extend_sql_col_to_pd():
+	n_cols = len(df_orders.columns)
+	new_col_list = []
+
+	#use SQL query to extract prices with matching item names from other tables
+	server = 'pidginserver.database.windows.net'
+	database = 'pidgin_2' #database for prices from orders
+	username = 'notpaul'
+	password = 'delivery482@'
+	driver= '{ODBC Driver 17 for SQL Server}'
+	cnxn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cursor = cnxn.cursor()
+	cursor.execute("SELECT price FROM * WHERE dbo.OrderDetails$.info = *.info")
+	row = cursor.fetchone()
+
+	#extract raw data to python list
+	for row in cursor:
+		row_to_list = [elem for elem in row]
+		new_col_list.append(row_to_list)
+
+		#what if it creates more than one col since you're pulling from multiple tables?
+		#create a pd and append it to the current one
+
+		#how to make sure that the price pulled from item aligns correctly on df_orders?
+
+	df_orders.insert(1,('%s',n_cols),new_col_list,True)
+	return df_orders
 
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
@@ -64,18 +97,18 @@ model.fit(trainX, trainY, epochs=400, batch_size=2, verbose=0)
 
 # Estimate model performance
 trainScore = model.evaluate(trainX, trainY, verbose=0)
-print('Predicted Score from Train: %.2f' % trainScore )
+#print('Predicted Score from Train: %.2f' % trainScore )
 
 testScore = model.evaluate(testX, testY, verbose=0)
-print('Predicted Score from Test: %.2f' % testScore)
+#print('Predicted Score from Test: %.2f' % testScore)
 
 # generate predictions for training
 trainPredict = model.predict(trainX)
 trp = numpy.sum(trainPredict)
-print(trp)
+#print(trp)
 testPredict = model.predict(testX)
 tsp = numpy.sum(testPredict)
-print(tsp)
+#print(tsp)
 
 # shift train predictions for plotting
 trainPredictPlot = numpy.empty_like(dataset)
@@ -105,6 +138,13 @@ def price_prediction():
 		pp = (trainScore + trp + testScore) - tsp
 		if pp >= last_column_total:
 			break
-	print(round(pp,2))
+	return print(round(pp,2))
 
+print("The Predicted Price of The Order Is:")
 pred = price_prediction()
+
+myapp = Flask(__name__)
+
+@myapp.route("/")
+def pp():
+	return pred
