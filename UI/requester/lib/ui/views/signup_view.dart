@@ -16,8 +16,11 @@ class SignUpView extends StatelessWidget {
     return ViewModelProvider<SignUpViewModel>.withConsumer(
       viewModel: SignUpViewModel(),
       builder: (context, model, child) => Scaffold(
-        appBar: BaseAppbar.getAppBar('Sign Up'),
-
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Color(0xff800000),
+          title: Text('Sign Up'),
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Column(

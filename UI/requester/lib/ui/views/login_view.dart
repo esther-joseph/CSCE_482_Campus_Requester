@@ -16,7 +16,11 @@ class LoginView extends StatelessWidget {
     return ViewModelProvider<LoginViewModel>.withConsumer(
       viewModel: LoginViewModel(),
       builder: (context, model, child) => Scaffold(
-          appBar: BaseAppbar.getAppBar('Log In'),
+          appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Color(0xff800000),
+          title: Text('Log In'),
+        ),
           backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
