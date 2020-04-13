@@ -18,17 +18,17 @@ class SignUpViewModel extends BaseModel {
   Future signUp(
       {@required String email,
       @required String password,
-      @required String confirm}) async {
+      @required String userName}) async {
     setBusy(true);
 
     var result = await _authenticationService.signUpWithEmail(
-        email: email, password: password, confirm: confirm);
+        email: email, password: password, userName: userName);
 
     setBusy(false);
 
     if (result is bool) {
       if (result) {
-        _navigationService.navigateTo(HomeViewRoute);
+        _navigationService.navigateTo(LoginViewRoute);
       } else {
         await _dialogService.showDialog(
             title: 'Sign Up Failure',

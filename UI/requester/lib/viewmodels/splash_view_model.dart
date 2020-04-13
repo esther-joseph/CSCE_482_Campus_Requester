@@ -13,7 +13,7 @@ class SplashViewModel extends BaseModel {
     var hasLoggedInUser = await _authenticationService.isUserLoggedIn();
 
     if (hasLoggedInUser) {
-      _navigationService.navigateTo(HomeViewRoute);
+      _navigationService.navigateTo(CreatePostViewRoute);
     } else {
       _navigationService.navigateTo(LoginViewRoute);
     }

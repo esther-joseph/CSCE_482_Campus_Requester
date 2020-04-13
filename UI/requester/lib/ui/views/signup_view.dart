@@ -8,8 +8,9 @@ import 'package:requester/viewmodels/signup_view_model.dart';
 
 class SignUpView extends StatelessWidget {
   final emailController = TextEditingController();
+  final userNameController = TextEditingController();
+
   final passwordController = TextEditingController();
-  final confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,18 +44,22 @@ class SignUpView extends StatelessWidget {
                 controller: emailController,
               ),
               verticalSpaceSmall,
+
+              InputField(
+                placeholder: 'User Name',
+                controller: userNameController,
+              ),
+              verticalSpaceSmall,
+
               InputField(
                 placeholder: 'Password',
                 password: true,
                 controller: passwordController,
                 additionalNote: 'Password has to be a minimum of 6 characters.',
               ),
-              InputField(
-                placeholder: 'Confirm',
-                password: true,
-                controller: passwordController,
-              ),
+
               verticalSpaceMedium,
+
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -62,11 +67,10 @@ class SignUpView extends StatelessWidget {
                   BusyButton(
                     title: 'Sign Up',
                     onPressed: () {
-                      // TODO: Perform SignUp here
-                      /*
-                      model.singUp(emailController.text,
-                        passwordController.text, confirmController.text);
-                      */
+                      model.signUp(
+                          email: emailController.text,
+                          userName: userNameController.text,
+                          password: passwordController.text);
                     },
                   )
                 ],

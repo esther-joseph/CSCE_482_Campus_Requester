@@ -6,13 +6,21 @@ import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/viewmodels/create_post_view_model.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:requester/viewmodels/place_view_model.dart';
 
 class CreatePostView extends StatefulWidget {
+  final PlaceViewModel place;
+  
+  CreatePostView({Key key, @required this.place}) : super(key: key);
+  
   @override
-  _CreatePostViewState createState() => _CreatePostViewState();
+  _CreatePostViewState createState() => _CreatePostViewState(place);
 }
 
 class _CreatePostViewState extends State<CreatePostView> {
+  PlaceViewModel place;
+  _CreatePostViewState(this.place);
+
   final itemController = TextEditingController();
   final serviceFeeController = TextEditingController();
   final subTotalFeeController = TextEditingController();
@@ -49,6 +57,13 @@ class _CreatePostViewState extends State<CreatePostView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               verticalSpaceMedium,
+              TextField(
+                decoration: InputDecoration(
+                  //TODO: get location name from place object
+                  labelText: place.name,
+                ),
+                enabled: false,
+              ),
               InputField(
                 placeholder: 'Item',
                 controller: itemController,
