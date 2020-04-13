@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
 import 'package:requester/services/navigation_service.dart';
+import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/bottom_navbar.dart';
 import 'package:requester/viewmodels/place_list_view_model.dart';
@@ -75,9 +76,16 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _selectLocation(PlaceViewModel vm) {
-    final NavigationService _navigationService = locator<NavigationService>();
-    print(vm.name);
-    _navigationService.navigateTo(CreatePostViewRoute);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreatePostView(place: vm),
+        )
+    );
+
+    //final NavigationService _navigationService = locator<NavigationService>();
+    //print(vm.name);
+    //_navigationService.navigateTo(CreatePostViewRoute);
   }
 
   @override
