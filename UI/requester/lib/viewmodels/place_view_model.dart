@@ -24,6 +24,6 @@ class PlaceViewModel {
   }
 
   double get longitude {
-    return this._place.latitude;
+    return this._place.longitude;
   }
 }

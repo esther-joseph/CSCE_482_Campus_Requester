@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
   final menuController = TextEditingController();
   final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controller;
   Position _currentPosition;
 
   @override
@@ -42,10 +42,11 @@ class _HomeViewState extends State<HomeView> {
     for(final place in places){
         String mar = i.toString();
         final MarkerId markerId = MarkerId(mar);
+        //print(place.longitude);
 
         final Marker marker = Marker(
         markerId: markerId,
-        position: LatLng(place.latitude, place.longitude,),
+        position: LatLng(place.latitude, place.longitude),
         infoWindow: InfoWindow(
           title: place.name,
           snippet: '*'),
@@ -63,16 +64,18 @@ class _HomeViewState extends State<HomeView> {
       print(marker);
     }
 
-    return markers.values.toSet();
+    return Set<Marker>.of(markers.values);
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    _controller.complete(controller);
+    _controller = controller;
     _currentPosition = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
         zoom: 14)));
+    print(_currentPosition.latitude);
+    print(_currentPosition.longitude);
   }
 
   void _selectLocation(PlaceViewModel vm) {

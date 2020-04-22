@@ -59,7 +59,6 @@ class _CreatePostViewState extends State<CreatePostView> {
               verticalSpaceMedium,
               TextField(
                 decoration: InputDecoration(
-                  //TODO: get location name from place object
                   labelText: place.name,
                 ),
                 enabled: false,
@@ -142,7 +141,8 @@ class _CreatePostViewState extends State<CreatePostView> {
                     if (!model.busy) {
                       model.addPost(
                           item: itemController.text,
-                          serviceFee: serviceFeeControlloer.text);
+                          serviceFee: serviceFeeControlloer.text,
+                          place: place);
                     }
                   },
                   child: const Text('Create Post!',

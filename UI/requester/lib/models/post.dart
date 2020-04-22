@@ -7,6 +7,10 @@ class Post {
   final String description;
   final DateTime createdAt;
   final DateTime deliverBy;
+  final String name;
+  final double latitude;
+  final double longitude;
+  final String placeId;
 
   Post(
       {this.postId,
@@ -16,7 +20,11 @@ class Post {
       this.total,
       this.description,
       this.createdAt,
-      this.deliverBy});
+      this.deliverBy,
+      this.name,
+      this.latitude,
+      this.longitude,
+      this.placeId});
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,6 +36,10 @@ class Post {
       'description': description,
       'createdAt': createdAt,
       'deliverBy': deliverBy,
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude,
+      'placeId': placeId
     };
   }
 
@@ -43,6 +55,10 @@ class Post {
         subTotal: map['subTotal'],
         description: map['description'],
         createdAt: map['createdAt'],
-        deliverBy: map['deliverBy']);
+        deliverBy: map['deliverBy'],
+        name: map['name'],
+        latitude: map['latitude'],
+        longitude: map['longitude'],
+        placeId: map['placeId']);
   }
 }

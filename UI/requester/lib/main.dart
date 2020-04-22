@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/services/dialog_service.dart';
-<<<<<<< HEAD
 import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/views/delivery_list_view.dart';
-=======
->>>>>>> 8ca444056b478fea382041b76e823c1d043717bb
 import 'package:requester/ui/views/home_view.dart';
 import 'package:requester/ui/views/login_view.dart';
 import 'package:requester/ui/views/order_list.dart';
@@ -42,7 +39,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigationKey,
       home: ChangeNotifierProvider(
         create: (context) => PlaceListViewModel(),
-        child: OrderListView()
+        child: HomeView()
       ),
 //      home: SplashView(),
       onGenerateRoute: generateRoute,

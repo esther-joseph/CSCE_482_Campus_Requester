@@ -22,11 +22,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name,
         viewToShow: HomeView(),
       );
-    case CreatePostViewRoute:
-      return _getPageRoute(
-        routeName: settings.name,
-        viewToShow: CreatePostView(),
-      );  
     default:
       return MaterialPageRoute(
           builder: (_) => Scaffold(
