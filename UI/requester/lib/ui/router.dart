@@ -4,6 +4,8 @@ import 'package:requester/constants/route_names.dart';
 import 'package:requester/ui/views/login_view.dart';
 import 'package:requester/ui/views/signup_view.dart';
 import 'package:requester/ui/views/create_post_view.dart';
+import 'package:requester/ui/views/order_list.dart';
+import 'package:requester/ui/views/delivery_list_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -21,6 +23,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: HomeView(),
+      );
+    case OrderListViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: OrderListView(),
+      );
+    case DeliveryListViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: DeliveryListView(),
       );
     default:
       return MaterialPageRoute(

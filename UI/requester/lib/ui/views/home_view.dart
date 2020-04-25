@@ -23,7 +23,6 @@ class _HomeViewState extends State<HomeView> {
   final menuController = TextEditingController();
   final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  GoogleMapController _controller;
   Position _currentPosition;
 
   @override
@@ -68,14 +67,11 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    _controller = controller;
     _currentPosition = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
         zoom: 14)));
-    print(_currentPosition.latitude);
-    print(_currentPosition.longitude);
   }
 
   void _selectLocation(PlaceViewModel vm) {
@@ -96,6 +92,11 @@ class _HomeViewState extends State<HomeView> {
     final vm = Provider.of<PlaceListViewModel>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xff800000),
+        title: Text('Campus Requester'),
+      ),
       body: Stack(children: <Widget>[
         GoogleMap(
           myLocationEnabled: true,
@@ -138,6 +139,7 @@ class _HomeViewState extends State<HomeView> {
           )
         )
       ]),
+      bottomNavigationBar: BottomNabar(),
     );
   }
 }
