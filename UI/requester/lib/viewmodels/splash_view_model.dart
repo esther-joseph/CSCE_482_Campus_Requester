@@ -4,6 +4,8 @@ import 'package:requester/services/authentication_service.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/viewmodels/base_model.dart';
 
+import '../constants/route_names.dart';
+
 class SplashViewModel extends BaseModel {
   final _authenticationService = locator<AuthenticationService>();
 
@@ -13,7 +15,7 @@ class SplashViewModel extends BaseModel {
     var hasLoggedInUser = await _authenticationService.isUserLoggedIn();
 
     if (hasLoggedInUser) {
-      _navigationService.navigateTo(CreatePostViewRoute);
+      _navigationService.navigateTo(HomeViewRoute);
     } else {
       _navigationService.navigateTo(LoginViewRoute);
     }
