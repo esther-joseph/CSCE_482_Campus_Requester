@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-
-import '../../viewmodels/home_view_model.dart';
-import '../../viewmodels/home_view_model.dart';
 import '../../viewmodels/home_view_model.dart';
 
 class HomeView extends StatefulWidget {
@@ -12,77 +9,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  // final menuController = TextEditingController();
-  // final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-
-  // GoogleMapController _controller;
-  // Position _currentPosition;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
-
-  // Set<Marker> _getPlaceMarkers(List<PlaceViewModel> places) {
-  //   //TODO: add a read from our database and use those locations to add markers
-
-  //   setState(() {
-  //       markers.clear();
-  //   });
-
-  //   var i = 0;
-  //   for(final place in places){
-  //       String mar = i.toString();
-  //       final MarkerId markerId = MarkerId(mar);
-  //       //print(place.longitude);
-
-  //       final Marker marker = Marker(
-  //       markerId: markerId,
-  //       position: LatLng(place.latitude, place.longitude),
-  //       infoWindow: InfoWindow(
-  //         title: place.name,
-  //         snippet: '*'),
-  //       );
-
-  //       setState(() {
-  //       markers[markerId] = marker;
-  //       });
-  //       i++;
-
-  //       //print(marker);
-  //   }
-
-  //   for (final marker in markers.values.toSet()){
-  //     print(marker);
-  //   }
-
-  //   return Set<Marker>.of(markers.values);
-  // }
-
-  // Future<void> _onMapCreated(GoogleMapController controller) async {
-  //   _controller = controller;
-  //   _currentPosition = await Geolocator()
-  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-  //       target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-  //       zoom: 14)));
-  //   print(_currentPosition.latitude);
-  //   print(_currentPosition.longitude);
-  // }
-
-  // void _selectLocation(PlaceViewModel vm) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => CreatePostView(place: vm),
-  //       )
-  //   );
-
-  //   //final NavigationService _navigationService = locator<NavigationService>();
-  //   //print(vm.name);
-  //   //_navigationService.navigateTo(CreatePostViewRoute);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(

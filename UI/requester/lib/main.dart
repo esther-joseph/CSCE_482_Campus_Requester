@@ -10,6 +10,7 @@ import 'package:requester/ui/views/order_list.dart';
 import 'package:requester/ui/views/post_list_view.dart';
 import 'package:requester/ui/views/signup_view.dart';
 import 'package:requester/ui/views/splash_view.dart';
+import 'package:requester/ui/views/delivery_view.dart';
 import 'package:requester/viewmodels/place_list_view_model.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
