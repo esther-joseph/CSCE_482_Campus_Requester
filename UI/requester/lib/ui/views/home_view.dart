@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
 import 'package:requester/services/navigation_service.dart';
+import 'package:requester/ui/views/accept_order_view.dart';
 import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/widgets/base_appbar.dart';
 import 'package:requester/ui/widgets/bottom_navbar.dart';
@@ -30,6 +31,15 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
+  void _onMarkerTapped(PlaceViewModel vm) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AcceptOrderView(place: vm),
+        )
+    );
+  }
+
   Set<Marker> _getPlaceMarkers(List<PlaceViewModel> places) {
     //TODO: add a read from our database and use those locations to add markers
 
@@ -49,6 +59,9 @@ class _HomeViewState extends State<HomeView> {
         infoWindow: InfoWindow(
           title: place.name,
           snippet: '*'),
+        onTap: () {
+          _onMarkerTapped(place);
+        },
         );
 
         setState(() {

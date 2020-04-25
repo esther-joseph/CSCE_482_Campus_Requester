@@ -1,13 +1,9 @@
 import 'package:intl/intl.dart';
-
 import 'package:requester/models/post.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
-import 'package:requester/ui/widgets/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/viewmodels/post_list_view_model.dart';
-
-import '../widgets/bottom_navbar.dart';
 
 class ItemModel {
   bool isExpanded;
