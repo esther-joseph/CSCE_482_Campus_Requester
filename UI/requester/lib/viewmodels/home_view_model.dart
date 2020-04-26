@@ -71,4 +71,6 @@ class HomeViewModel extends ChangeNotifier {
     this.places = results.map((place) => PlaceViewModel(place)).toList();
     notifyListeners();
   }
+
+  void selectLocation() {}
 }
