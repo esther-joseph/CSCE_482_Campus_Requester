@@ -24,6 +24,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name,
         viewToShow: HomeView(),
       );
+    case CreatePostViewRoute:
+      return _getPageRoute(
+          routeName: settings.name, viewToShow: CreatePostView());
     case OrderListViewRoute:
       return _getPageRoute(
         routeName: settings.name,

@@ -16,53 +16,59 @@ class _HomeViewState extends State<HomeView> {
     return ViewModelProvider<HomeViewModel>.withConsumer(
         viewModel: HomeViewModel(),
         builder: (context, model, child) => Scaffold(
-            body: Stack(
-              children: <Widget>[
-                GoogleMap(
-                  myLocationEnabled: true,
-                  onMapCreated: model.onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(45.521563, -122.677433), zoom: 14),
-                  markers: model.getPlaceMarkers(model.places),
-                ),
-                SafeArea(
-                  child: TextField(
-                    onSubmitted: (value) {
-                      model.fetchPlacesByKeywordAndPosition(
-                          value,
-                          model.currentPosition.latitude,
-                          model.currentPosition.longitude);
-                    },
-                    decoration: InputDecoration(
-                        labelText: "Search here",
-                        fillColor: Colors.white,
-                        filled: true),
+              body: Stack(
+                children: <Widget>[
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    onMapCreated: model.onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(45.521563, -122.677433), zoom: 14),
+                    markers: model.getPlaceMarkers(model.places),
                   ),
-                ),
-                Visibility(
-                    visible: model.places.length > 0 ? true : false,
-                    child: SafeArea(
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: FlatButton(
-                          child: Text("Show List",
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => PlaceList(
-                                places: model.places,
-                                onSelected: null,
-                              ),
-                            );
-                          },
-                          color: Colors.grey,
+                  SafeArea(
+                    child: TextField(
+                      onSubmitted: (value) {
+                        model.fetchPlacesByKeywordAndPosition(
+                            value,
+                            model.currentPosition.latitude,
+                            model.currentPosition.longitude);
+                      },
+                      decoration: InputDecoration(
+                          labelText: "Search here",
+                          fillColor: Colors.white,
+                          filled: true),
+                    ),
+                  ),
+                  Visibility(
+                      visible: model.places.length > 0 ? true : false,
+                      child: SafeArea(
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: FlatButton(
+                            child: Text("Show List",
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => PlaceList(
+                                  places: model.places,
+                                  onSelected: null,
+                                ),
+                              );
+                            },
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                    )),
-              ],
-            ),
-            bottomNavigationBar: BottomNabar()));
+                      )),
+                ],
+              ),
+              bottomNavigationBar: BottomNabar(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: model.createButton,
+                child: Icon(Icons.add),
+                backgroundColor: Colors.green,
+              ),
+            ));
   }
 }
 

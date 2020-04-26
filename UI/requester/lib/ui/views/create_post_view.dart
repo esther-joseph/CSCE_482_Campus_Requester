@@ -9,17 +9,16 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
 
 class CreatePostView extends StatefulWidget {
-  final PlaceViewModel place;
-  
-  CreatePostView({Key key, @required this.place}) : super(key: key);
-  
+  //final PlaceViewModel place;
+
+  CreatePostView({Key key}) : super(key: key);
+
   @override
-  _CreatePostViewState createState() => _CreatePostViewState(place);
+  _CreatePostViewState createState() => _CreatePostViewState();
 }
 
 class _CreatePostViewState extends State<CreatePostView> {
-  PlaceViewModel place;
-  _CreatePostViewState(this.place);
+  // _CreatePostViewState(this.place);
 
   final itemController = TextEditingController();
   final serviceFeeController = TextEditingController();
@@ -59,7 +58,7 @@ class _CreatePostViewState extends State<CreatePostView> {
               verticalSpaceMedium,
               TextField(
                 decoration: InputDecoration(
-                  labelText: place.name,
+                  labelText: "",
                 ),
                 enabled: false,
               ),
@@ -125,7 +124,6 @@ class _CreatePostViewState extends State<CreatePostView> {
                 color: Colors.white,
               ),
               verticalSpace(20),
-              
               InputField(
                   placeholder: 'Service Fee',
                   controller: serviceFeeController,
@@ -142,7 +140,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                       model.addPost(
                           item: itemController.text,
                           serviceFee: serviceFeeControlloer.text,
-                          place: place);
+                          place: null);
                     }
                   },
                   child: const Text('Create Post!',

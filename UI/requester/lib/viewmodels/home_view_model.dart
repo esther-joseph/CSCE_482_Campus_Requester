@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
 import 'package:requester/services/api_service.dart';
 import 'package:requester/services/dialog_service.dart';
@@ -73,4 +74,8 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void selectLocation() {}
+
+  void createButton() {
+    _navigationService.navigateTo(CreatePostViewRoute);
+  }
 }
