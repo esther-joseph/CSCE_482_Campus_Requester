@@ -18,59 +18,63 @@ class LoginView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Color(0xff800000),
-          title: Text('Log In'),
-        ),
-
+            centerTitle: true,
+            backgroundColor: Color(0xff800000),
+            title: Text('Log In'),
+          ),
           backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                // SizedBox(
-                //     height: 150,
-                //     //TODO Have to add Icon on the images folder
-                //     child: Image.asset('assets/images/tamu_logo.png')),
-                InputField(
-                  placeholder: 'Username',
-                  controller: usernameController,
-                ),
-                verticalSpaceSmall,
-                InputField(
-                  placeholder: 'Password',
-                  password: true,
-                  controller: passwordController,
-                ),
-                verticalSpaceMedium,
-                Row(
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    BusyButton(
-                      title: 'Login',
-                      busy: model.busy,
-                      onPressed: () {
-                        // TODO: Perform login here
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    // SizedBox(
+                    //     height: 150,
+                    //     //TODO Have to add Icon on the images folder
+                    //     child: Image.asset('assets/images/tamu_logo.png')),
+                    InputField(
+                      placeholder: 'Username',
+                      controller: usernameController,
+                    ),
+                    verticalSpaceSmall,
+                    InputField(
+                      placeholder: 'Password',
+                      password: true,
+                      controller: passwordController,
+                    ),
+                    verticalSpaceMedium,
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        BusyButton(
+                          title: 'Login',
+                          busy: model.busy,
+                          onPressed: () {
+                            // TODO: Perform login here
 
-                        model.signIn(
-                            username: usernameController.text,
-                            password: passwordController.text);
+                            model.signIn(
+                                username: usernameController.text,
+                                password: passwordController.text);
+                          },
+                        )
+                      ],
+                    ),
+                    verticalSpaceMedium,
+                    TextLink(
+                      'Create an Account if you\'re new.',
+                      onPressed: () {
+                        model.navigateToSignUp();
                       },
                     )
                   ],
                 ),
-                verticalSpaceMedium,
-                TextLink(
-                  'Create an Account if you\'re new.',
-                  onPressed: () {
-                    model.navigateToSignUp();
-                  },
-                )
-              ],
+              ),
             ),
           )),
     );
