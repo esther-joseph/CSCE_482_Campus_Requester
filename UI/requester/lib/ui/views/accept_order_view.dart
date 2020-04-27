@@ -7,6 +7,7 @@ import 'package:requester/ui/widgets/input_field.dart';
 import 'package:requester/viewmodels/accept_order_view_model.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
+import '../../viewmodels/home_view_model.dart';
 
 class AcceptOrderView extends StatefulWidget {
   
@@ -22,6 +23,8 @@ class _AcceptOrderViewState extends State<AcceptOrderView> {
   final subTotalFeeController = TextEditingController();
 
   final serviceFeeControlloer = TextEditingController();
+
+  var orderToAccept = Singleton;
 
   String _time = "Not set";
 
@@ -39,19 +42,25 @@ class _AcceptOrderViewState extends State<AcceptOrderView> {
               verticalSpaceMedium,
               TextField(
                 decoration: InputDecoration(
-                  labelText: "place.name",
+                  labelText: orderToAccept.order.name,
                 ),
                 enabled: false,
               ),
               TextField(
                 decoration: InputDecoration(
-                  labelText: "items",
+                  labelText: orderToAccept.order.item,
                 ),
                 enabled: false,
               ),
               TextField(
                 decoration: InputDecoration(
-                  labelText: "Delivery Time",
+                  labelText: "Delivery Time: ",
+                ),
+                enabled: false,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: orderToAccept.order.serviceFee,
                 ),
                 enabled: false,
               ),

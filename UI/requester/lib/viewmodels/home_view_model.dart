@@ -1,3 +1,4 @@
+library singleton;
 import 'package:flutter/material.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
@@ -15,6 +16,13 @@ import 'package:requester/viewmodels/place_view_model.dart';
 import '../locator.dart';
 import '../services/web_service.dart';
 
+
+var Singleton = new Impl();
+
+class Impl {
+  Order order;
+}
+
 class HomeViewModel extends ChangeNotifier {
   final DialogService _dialgService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -29,9 +37,12 @@ class HomeViewModel extends ChangeNotifier {
   Position _currentPosition;
   Position get currentPosition => _currentPosition;
 
-  List<Order> orders;
+  List<Order> orders; 
+
+  var orderToAccept = Singleton;
 
   void onMarkerTapped(Order order) {
+    orderToAccept.order = order;
     _navigationService.navigateTo(AcceptOrderViewRoute);
   }
 
