@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:requester/models/order.dart';
 import 'package:requester/models/user.dart';
+import 'package:pref_dessert/pref_dessert.dart';
 
 class FlutterStoreService {
   final storage = FlutterSecureStorage();
+  final repo = new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
 
   Future loginWithEmail(
       {@required String username, @required String password}) async {
@@ -56,5 +59,15 @@ class FlutterStoreService {
     return jwt == null ? false : true;
   }
 
-  Future<void> saveOrder() async {}
+  Future<String> getToken() async {
+    String token = await storage.read(key: "jwt");
+    return token;
+  }
+
+  Future<void> saveOrder(Order order) async {
+    repo.save(order);
+    var list = repo.findAll();
+
+    print(list);
+  }
 }
