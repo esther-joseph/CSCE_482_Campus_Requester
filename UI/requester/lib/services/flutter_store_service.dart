@@ -66,8 +66,9 @@ class FlutterStoreService {
 
   Future<void> saveOrder(Order order) async {
     repo.save(order);
-    var list = repo.findAll();
+  }
 
-    print(list);
+  Future<List<Order>> getOrders() {
+    return repo.findAll();
   }
 }
