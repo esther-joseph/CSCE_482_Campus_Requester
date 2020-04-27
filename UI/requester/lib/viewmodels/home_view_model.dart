@@ -39,7 +39,8 @@ class HomeViewModel extends ChangeNotifier {
         final Marker marker = Marker(
           markerId: markerId,
           position: LatLng(order.latitude, order.longitude),
-          infoWindow: InfoWindow(title: order.name, snippet: '*'),
+          infoWindow: InfoWindow(
+              title: order.name, snippet: order.item + order.serviceFee),
         );
 
         markers[markerId] = marker;
