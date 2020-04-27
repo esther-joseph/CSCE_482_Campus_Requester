@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:requester/models/user.dart';
 
-class AuthenticationService {
+class FlutterStoreService {
   final storage = FlutterSecureStorage();
 
   Future loginWithEmail(
@@ -55,4 +55,6 @@ class AuthenticationService {
     var jwt = await storage.read(key: "jwt");
     return jwt == null ? false : true;
   }
+
+  Future<void> saveOrder() async {}
 }

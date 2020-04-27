@@ -25,7 +25,6 @@ class HomeViewModel extends ChangeNotifier {
 
   GoogleMapController _controller;
   Position _currentPosition;
-
   Position get currentPosition => _currentPosition;
 
   Set<Marker> getPlaceMarkers(List<PlaceViewModel> places) {

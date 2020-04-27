@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/ui/shared/ui_helpers.dart';
 import 'package:requester/ui/widgets/base_appbar.dart';
+import 'package:requester/ui/widgets/busy_overlay.dart';
 import 'package:requester/ui/widgets/input_field.dart';
+import 'package:requester/ui/widgets/place_list.dart';
+import 'package:requester/utils/url_helper.dart';
 import 'package:requester/viewmodels/create_post_view_model.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
@@ -33,127 +36,149 @@ class _CreatePostViewState extends State<CreatePostView> {
     return ViewModelProvider<CreatePostViewModel>.withConsumer(
       viewModel: CreatePostViewModel(),
       builder: (context, model, child) => Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   child: !model.busy
-        //       ? Icon(Icons.add)
-        //       : CircularProgressIndicator(
-        //           valueColor: AlwaysStoppedAnimation(Colors.white),
-        //         ),
-        //   onPressed: () {
-        //     if (!model.busy) {
-        //       model.addPost(
-        //           item: itemController.text,
-        //           serviceFee: serviceFeeControlloer.text);
-        //     }
-        //   },
-        //   backgroundColor:
-        //       !model.busy ? Theme.of(context).primaryColor : Colors.grey[600],
-        // ),
         appBar: BaseAppbar.getAppBar('Create Post'),
         body: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  verticalSpaceMedium,
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "",
+            child: BusyOverlay(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    verticalSpaceMedium,
+                    TextField(
+                      onSubmitted: (value) {
+                        model.fetchPlacesByKeywordAndPosition(value);
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) => ListView.builder(
+                                  itemCount: model.places.length,
+                                  itemBuilder: (context, index) {
+                                    final place = model.places[index];
+                                    return ListTile(
+                                        onTap: () {
+                                          //go to create post
+                                          model.onSelected(place);
+                                          Navigator.pop(context);
+                                        },
+                                        leading: Container(
+                                            width: 100,
+                                            height: 100,
+                                            child: Image.network(
+                                                UrlHelper.urlForReferenceImage(
+                                                    place.photoURL),
+                                                fit: BoxFit.cover)),
+                                        title: Text(place.name));
+                                  },
+                                ));
+                      },
+                      decoration: InputDecoration(
+                          labelText: "What do you want?",
+                          fillColor: Colors.white,
+                          filled: true),
                     ),
-                    enabled: false,
-                  ),
-                  InputField(
-                    placeholder: 'Item',
-                    controller: itemController,
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    elevation: 4.0,
-                    onPressed: () {
-                      DatePicker.showDateTimePicker(context,
-                          minTime: DateTime.now(),
-                          theme: DatePickerTheme(
-                            containerHeight: 210.0,
+                    (model.selectedPosition != null)
+                        ? TextField(
+                            decoration: InputDecoration(
+                              labelText: model.selectedPosition.name,
+                            ),
+                            enabled: false,
+                          )
+                        : TextField(
+                            decoration: InputDecoration(
+                              labelText: "",
+                            ),
+                            enabled: false,
                           ),
-                          showTitleActions: true, onConfirm: (time) {
-                        _time =
-                            'Day:${time.month}.${time.day} Time: ${time.hour}:${time.minute}';
-                        setState(() {});
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
-                      setState(() {});
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50.0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.access_time,
-                                      size: 18.0,
-                                      color: Colors.teal,
-                                    ),
-                                    Text(
-                                      " $_time",
-                                      style: TextStyle(
-                                          color: Colors.teal,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            "  Change",
-                            style: TextStyle(
-                                color: Colors.teal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ],
-                      ),
+                    InputField(
+                      placeholder: 'Item',
+                      controller: itemController,
                     ),
-                    color: Colors.white,
-                  ),
-                  verticalSpace(20),
-                  InputField(
-                      placeholder: 'Service Fee',
-                      controller: serviceFeeController,
-                      textInputType: TextInputType.number),
-                  InputField(
-                      placeholder: 'SubTotal',
-                      controller: subTotalFeeController,
-                      textInputType: TextInputType.number),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton(
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      elevation: 4.0,
                       onPressed: () {
-                        if (!model.busy) {
+                        DatePicker.showDateTimePicker(context,
+                            minTime: DateTime.now(),
+                            theme: DatePickerTheme(
+                              containerHeight: 210.0,
+                            ),
+                            showTitleActions: true, onConfirm: (time) {
+                          _time =
+                              'Day:${time.month}.${time.day} Time: ${time.hour}:${time.minute}';
+                          setState(() {});
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                        setState(() {});
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50.0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 18.0,
+                                        color: Colors.teal,
+                                      ),
+                                      Text(
+                                        " $_time",
+                                        style: TextStyle(
+                                            color: Colors.teal,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text(
+                              "  Change",
+                              style: TextStyle(
+                                  color: Colors.teal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                      color: Colors.white,
+                    ),
+                    verticalSpace(10),
+                    InputField(
+                        placeholder: 'Service Fee',
+                        controller: serviceFeeController,
+                        textInputType: TextInputType.number),
+                    InputField(
+                        placeholder: 'SubTotal',
+                        controller: subTotalFeeController,
+                        textInputType: TextInputType.number),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RaisedButton(
+                        onPressed: () {
                           model.addPost(
                               item: itemController.text,
                               serviceFee: serviceFeeControlloer.text,
                               place: null);
-                        }
-                      },
-                      child: const Text('Create Post!',
-                          style: TextStyle(fontSize: 20)),
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
-                      elevation: 5,
+                        },
+                        child: const Text('Create Post!',
+                            style: TextStyle(fontSize: 20)),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        elevation: 5,
+                      ),
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           ),

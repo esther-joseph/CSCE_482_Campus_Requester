@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
-import 'package:requester/services/authentication_service.dart';
 import 'package:requester/services/dialog_service.dart';
+import 'package:requester/services/flutter_store_service.dart';
 import 'package:requester/services/navigation_service.dart';
 
 import 'base_model.dart';
 
 class SignUpViewModel extends BaseModel {
-  final AuthenticationService _authenticationService =
-      locator<AuthenticationService>();
+  final FlutterStoreService _flutterStoreSerice =
+      locator<FlutterStoreService>();
 
   final DialogService _dialogService = locator<DialogService>();
 
@@ -21,7 +21,7 @@ class SignUpViewModel extends BaseModel {
       @required String userName}) async {
     setBusy(true);
 
-    var result = await _authenticationService.signUpWithEmail(
+    var result = await _flutterStoreSerice.signUpWithEmail(
         email: email, password: password, userName: userName);
 
     setBusy(false);

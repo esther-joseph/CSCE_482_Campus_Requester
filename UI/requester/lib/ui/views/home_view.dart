@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
                     myLocationEnabled: true,
                     onMapCreated: model.onMapCreated,
                     initialCameraPosition: CameraPosition(
-                        target: LatLng(45.521563, -122.677433), zoom: 14),
+                        target: LatLng(30.615011, -96.342476), zoom: 14),
                     markers: model.getPlaceMarkers(model.places),
                   ),
                   SafeArea(
