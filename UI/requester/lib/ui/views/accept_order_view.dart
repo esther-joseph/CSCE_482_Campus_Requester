@@ -9,17 +9,13 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
 
 class AcceptOrderView extends StatefulWidget {
-  final PlaceViewModel place;
-  
-  AcceptOrderView({Key key, @required this.place}) : super(key: key);
   
   @override
-  _AcceptOrderViewState createState() => _AcceptOrderViewState(place);
+  _AcceptOrderViewState createState() => _AcceptOrderViewState();
 }
 
 class _AcceptOrderViewState extends State<AcceptOrderView> {
   PlaceViewModel place;
-  _AcceptOrderViewState(this.place);
 
   final itemController = TextEditingController();
   final serviceFeeController = TextEditingController();
@@ -43,7 +39,7 @@ class _AcceptOrderViewState extends State<AcceptOrderView> {
               verticalSpaceMedium,
               TextField(
                 decoration: InputDecoration(
-                  labelText: place.name,
+                  labelText: "place.name",
                 ),
                 enabled: false,
               ),

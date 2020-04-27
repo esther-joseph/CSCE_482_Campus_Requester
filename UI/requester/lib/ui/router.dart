@@ -6,6 +6,7 @@ import 'package:requester/ui/views/signup_view.dart';
 import 'package:requester/ui/views/create_post_view.dart';
 import 'package:requester/ui/views/order_list.dart';
 import 'package:requester/ui/views/delivery_list_view.dart';
+import 'package:requester/ui/views/accept_order_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -36,6 +37,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: DeliveryListView(),
+      );
+    case AcceptOrderViewRoute:
+     return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: AcceptOrderView(),
       );
     default:
       return MaterialPageRoute(

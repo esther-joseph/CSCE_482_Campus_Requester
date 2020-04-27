@@ -31,6 +31,10 @@ class HomeViewModel extends ChangeNotifier {
 
   List<Order> orders;
 
+  void onMarkerTapped(Order order) {
+    _navigationService.navigateTo(AcceptOrderViewRoute);
+  }
+
   Set<Marker> getPlaceMarkers() {
     if (orders != null) {
       for (final order in orders) {
@@ -41,6 +45,9 @@ class HomeViewModel extends ChangeNotifier {
           position: LatLng(order.latitude, order.longitude),
           infoWindow: InfoWindow(
               title: order.name, snippet: order.item + order.serviceFee),
+          onTap: () {
+            onMarkerTapped(order);
+          },
         );
 
         markers[markerId] = marker;

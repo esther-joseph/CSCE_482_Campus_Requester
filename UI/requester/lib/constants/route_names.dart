@@ -5,4 +5,5 @@ const String PostListViewRoute = "PostListView";
 const String CreatePostViewRoute = "CreatePostView";
 const String OrderListViewRoute = "OrderListViewRoute";
 const String DeliveryListViewRoute = "DeliveryListViewRoute";
+const String AcceptOrderViewRoute = "AcceptOrderViewRoute";
 // Generate the views here
