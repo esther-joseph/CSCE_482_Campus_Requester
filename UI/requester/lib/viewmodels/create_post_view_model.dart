@@ -24,10 +24,12 @@ class CreatePostViewModel extends BaseModel {
   Position _currentPosition;
   Position get currentPosition => _currentPosition;
 
-  Future addPost(
-      {@required String item,
-      @required String serviceFee,
-      @required PlaceViewModel place}) async {
+  Future addPost({
+    @required String item,
+    @required String serviceFee,
+    @required PlaceViewModel place,
+    String price,
+  }) async {
     setBusy(true);
 
     // var result = await _apiService.addPost(Post(

@@ -25,7 +25,7 @@ class _CreatePostViewState extends State<CreatePostView> {
 
   final itemController = TextEditingController();
   final serviceFeeController = TextEditingController();
-  final subTotalFeeController = TextEditingController();
+  final priceController = TextEditingController();
 
   final serviceFeeControlloer = TextEditingController();
 
@@ -158,8 +158,8 @@ class _CreatePostViewState extends State<CreatePostView> {
                         controller: serviceFeeController,
                         textInputType: TextInputType.number),
                     InputField(
-                        placeholder: 'SubTotal',
-                        controller: subTotalFeeController,
+                        placeholder: 'price',
+                        controller: priceController,
                         textInputType: TextInputType.number),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -168,7 +168,8 @@ class _CreatePostViewState extends State<CreatePostView> {
                           model.addPost(
                               item: itemController.text,
                               serviceFee: serviceFeeControlloer.text,
-                              place: null);
+                              price: priceController.text,
+                              place: model.selectedPosition);
                         },
                         child: const Text('Create Post!',
                             style: TextStyle(fontSize: 20)),
