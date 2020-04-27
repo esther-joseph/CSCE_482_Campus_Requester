@@ -24,10 +24,9 @@ class _CreatePostViewState extends State<CreatePostView> {
   // _CreatePostViewState(this.place);
 
   final itemController = TextEditingController();
-  final serviceFeeController = TextEditingController();
   final priceController = TextEditingController();
 
-  final serviceFeeControlloer = TextEditingController();
+  final serviceFeeController = TextEditingController();
 
   String _time = "Not set";
 
@@ -167,7 +166,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                         onPressed: () {
                           model.addPost(
                               item: itemController.text,
-                              serviceFee: serviceFeeControlloer.text,
+                              serviceFee: serviceFeeController.text,
                               price: priceController.text,
                               place: model.selectedPosition);
                         },
