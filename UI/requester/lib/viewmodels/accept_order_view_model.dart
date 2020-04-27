@@ -6,6 +6,8 @@ import 'package:requester/services/api_service.dart';
 import 'package:requester/services/dialog_service.dart';
 import 'package:requester/services/navigation_service.dart';
 import 'package:requester/viewmodels/place_view_model.dart';
+import 'package:requester/models/order.dart';
+import 'package:requester/constants/route_names.dart';
 
 import 'base_model.dart';
 
@@ -16,29 +18,29 @@ class AcceptOrderViewModel extends BaseModel {
 
   //TODO: change addPost to AcceptOrder
   //TODO: will push accepted order to user's profile
-  Future addPost(
-      {@required String item,
-      @required String serviceFee,
-      @required PlaceViewModel place}) async {
+  Future acceptOrder({
+    @required Order order,
+  }) async {
     setBusy(true);
+    print(order.name);
+  //   await _flutterStoreSerice.saveOrder(Order(
+  //       await _flutterStoreSerice.getToken(),
+  //       place.name,
+  //       place.latitude,
+  //       place.longitude,
+  //       place.placeId,
+  //       place.photoURL,
+  //       item,
+  //       serviceFee,
+  //       price));
 
-    var result = await _apiService.addPost(Post(
-        item: item,
-        serviceFee: serviceFee,
-        name: place.name,
-        latitude: place.latitude,
-        longitude: place.longitude,
-        placeId: place.placeId));
     setBusy(false);
 
-    if (result is String) {
-      await _dialgService.showDialog(
-          title: 'Could not create post', description: result);
-    } else {
-      await _dialgService.showDialog(
-          title: 'Post successfully Added',
-          description: 'Your post has been created');
-    }
-    _navigationService.pop();
+  //   await _dialgService.showDialog(
+  //       title: 'Post successfully Added',
+  //       description: 'Your post has been created');
+  //   _navigationService.pop();
+  // }
+    _navigationService.navigateTo(DeliveryListViewRoute);
   }
 }

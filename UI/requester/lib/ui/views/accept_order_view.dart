@@ -69,11 +69,10 @@ class _AcceptOrderViewState extends State<AcceptOrderView> {
                 child: RaisedButton(
                   onPressed: () {
                     if (!model.busy) {
-                      //TODO: change addPost to AcceptOrder once it is changed in view model
-                      model.addPost(
-                          item: itemController.text,
-                          serviceFee: serviceFeeControlloer.text,
-                          place: place);
+                      //TODO: add accepted order to user's delivery list
+                      model.acceptOrder(
+                          order: orderToAccept.order
+                          );
                     }
                   },
                   child: const Text('Accept',
