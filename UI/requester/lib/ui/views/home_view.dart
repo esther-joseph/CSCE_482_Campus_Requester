@@ -25,20 +25,6 @@ class _HomeViewState extends State<HomeView> {
                         target: LatLng(30.615011, -96.342476), zoom: 14),
                     markers: model.getPlaceMarkers(model.places),
                   ),
-                  SafeArea(
-                    child: TextField(
-                      onSubmitted: (value) {
-                        model.fetchPlacesByKeywordAndPosition(
-                            value,
-                            model.currentPosition.latitude,
-                            model.currentPosition.longitude);
-                      },
-                      decoration: InputDecoration(
-                          labelText: "Search here",
-                          fillColor: Colors.white,
-                          filled: true),
-                    ),
-                  ),
                   Visibility(
                       visible: model.places.length > 0 ? true : false,
                       child: SafeArea(
