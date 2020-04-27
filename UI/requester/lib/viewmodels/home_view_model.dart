@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
+import 'package:requester/models/order.dart';
 import 'package:requester/services/api_service.dart';
 import 'package:requester/services/dialog_service.dart';
+import 'package:requester/services/flutter_store_service.dart';
 import 'package:requester/services/navigation_service.dart';
 
 import 'package:geolocator/geolocator.dart';
@@ -14,12 +16,12 @@ import '../locator.dart';
 import '../services/web_service.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final ApiService _apiService = locator<ApiService>();
   final DialogService _dialgService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final WebService _webService = locator<WebService>();
+  final FlutterStoreService _flutterStoreSerice =
+      locator<FlutterStoreService>();
 
-  final menuController = TextEditingController();
   final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   var places = List<PlaceViewModel>();
 
@@ -27,26 +29,26 @@ class HomeViewModel extends ChangeNotifier {
   Position _currentPosition;
   Position get currentPosition => _currentPosition;
 
-  Set<Marker> getPlaceMarkers(List<PlaceViewModel> places) {
-    markers.clear();
-    var i = 0;
-    for (final place in places) {
-      String mar = i.toString();
-      final MarkerId markerId = MarkerId(mar);
-      //print(place.longitude);
+  List<Order> orders;
 
-      final Marker marker = Marker(
-        markerId: markerId,
-        position: LatLng(place.latitude, place.longitude),
-        infoWindow: InfoWindow(title: place.name, snippet: '*'),
-      );
+  Set<Marker> getPlaceMarkers() {
+    if (orders != null) {
+      for (final order in orders) {
+        final MarkerId markerId = MarkerId(order.placeID);
 
-      markers[markerId] = marker;
-      notifyListeners();
-      i++;
+        final Marker marker = Marker(
+          markerId: markerId,
+          position: LatLng(order.latitude, order.longitude),
+          infoWindow: InfoWindow(title: order.name, snippet: '*'),
+        );
 
-      //print(marker);
+        markers[markerId] = marker;
+        notifyListeners();
+
+        //print(marker);
+      }
     }
+
     return Set<Marker>.of(markers.values);
   }
 
@@ -57,22 +59,18 @@ class HomeViewModel extends ChangeNotifier {
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
         zoom: 14)));
-    notifyListeners();
-
-    print(_currentPosition.latitude);
-    print(_currentPosition.longitude);
-  }
-
-  Future<void> fetchPlacesByKeywordAndPosition(
-      String keyword, double latitude, double longitude) async {
-    final results = await _webService.fetchPlacesByKeywordAndPosition(
-        keyword, latitude, longitude);
-    print(results.map((place) => PlaceViewModel(place)).toList());
-    this.places = results.map((place) => PlaceViewModel(place)).toList();
+    orders = await _flutterStoreSerice.getOrders();
     notifyListeners();
   }
 
-  void selectLocation() {}
+  // Future<void> fetchPlacesByKeywordAndPosition(
+  //     String keyword, double latitude, double longitude) async {
+  //   final results = await _webService.fetchPlacesByKeywordAndPosition(
+  //       keyword, latitude, longitude);
+  //   print(results.map((place) => PlaceViewModel(place)).toList());
+  //   this.places = results.map((place) => PlaceViewModel(place)).toList();
+  //   notifyListeners();
+  // }
 
   void createButton() {
     _navigationService.navigateTo(CreatePostViewRoute);

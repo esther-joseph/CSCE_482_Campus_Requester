@@ -69,6 +69,7 @@ class FlutterStoreService {
   }
 
   Future<List<Order>> getOrders() {
+    print(repo.findAll());
     return repo.findAll();
   }
 }
