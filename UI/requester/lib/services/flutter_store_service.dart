@@ -78,9 +78,11 @@ class FlutterStoreService {
 
   void accepctOrder(Order order) async {
     final List<Order> list = await repo.findAll();
+    repo.removeAll();
+
     for (int i = 0; i < list.length; i++) {
-      if (list[i].placeID == order.placeID) {
-        await repo.remove(i);
+      if (list[i].placeID != order.placeID) {
+        await repo.save(list[i]);
       }
     }
     Delivery delivery = Delivery(

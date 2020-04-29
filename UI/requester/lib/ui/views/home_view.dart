@@ -15,6 +15,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
         viewModel: HomeViewModel(),
+        onModelReady: (model) => model.getPlaceMarkers(),
         builder: (context, model, child) => Scaffold(
               body: Stack(
                 children: <Widget>[

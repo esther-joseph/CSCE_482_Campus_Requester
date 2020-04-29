@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:requester/constants/route_names.dart';
 import 'package:requester/locator.dart';
 import 'package:requester/models/order.dart';
 import 'package:requester/models/place.dart';
@@ -52,7 +53,7 @@ class CreatePostViewModel extends BaseModel {
     await _dialgService.showDialog(
         title: 'Post successfully Added',
         description: 'Your post has been created');
-    _navigationService.pop();
+    _navigationService.navigateTo(HomeViewRoute);
   }
 
   void onSelected(PlaceViewModel place) {
@@ -69,7 +70,7 @@ class CreatePostViewModel extends BaseModel {
         keyword, _currentPosition.latitude, _currentPosition.longitude);
     print(results.map((place) => PlaceViewModel(place)).toList());
     this.places = results.map((place) => PlaceViewModel(place)).toList();
-    setBusy(true);
+    setBusy(false);
 
     notifyListeners();
   }
