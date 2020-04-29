@@ -5,6 +5,7 @@ import 'package:requester/services/dialog_service.dart';
 import 'package:requester/services/flutter_store_service.dart';
 import 'package:requester/services/navigation_service.dart';
 
+import '../constants/route_names.dart';
 import 'base_model.dart';
 
 class LoginViewModel extends BaseModel {
@@ -28,7 +29,7 @@ class LoginViewModel extends BaseModel {
 
     if (result is bool) {
       if (result) {
-        _navigationService.navigateTo(PostListViewRoute);
+        _navigationService.navigateTo(HomeViewRoute);
       } else {
         await _dialogService.showDialog(
             title: 'Sign In Failure',

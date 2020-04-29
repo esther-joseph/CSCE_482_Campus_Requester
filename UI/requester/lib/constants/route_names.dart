@@ -3,7 +3,7 @@ const String SignUpViewRoute = "SignUpView";
 const String HomeViewRoute = "HomeView";
 const String PostListViewRoute = "PostListView";
 const String CreatePostViewRoute = "CreatePostView";
-const String OrderListViewRoute = "OrderListViewRoute";
+const String OrderListViewRoute = "OrderListView";
 const String DeliveryListViewRoute = "DeliveryListViewRoute";
 const String AcceptOrderViewRoute = "AcceptOrderViewRoute";
 // Generate the views here

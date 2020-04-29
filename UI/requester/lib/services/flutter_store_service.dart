@@ -72,4 +72,13 @@ class FlutterStoreService {
     print(repo.findAll());
     return repo.findAll();
   }
+
+  void accepctOrder(Order order) async {
+    final List<Order> list = await repo.findAll();
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].placeID == order.placeID) {
+        repo.remove(i);
+      }
+    }
+  }
 }

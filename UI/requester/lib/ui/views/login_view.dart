@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:requester/viewmodels/login_view_model.dart';
 
+import '../shared/ui_helpers.dart';
+
 class LoginView extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -37,6 +39,7 @@ class LoginView extends StatelessWidget {
                     //     height: 150,
                     //     //TODO Have to add Icon on the images folder
                     //     child: Image.asset('assets/images/tamu_logo.png')),
+                    verticalSpaceLarge,
                     InputField(
                       placeholder: 'Username',
                       controller: usernameController,
