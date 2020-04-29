@@ -32,6 +32,7 @@ class CreatePostViewModel extends BaseModel {
     @required String item,
     @required String serviceFee,
     @required PlaceViewModel place,
+    @required String deliveryTime,
     String price,
   }) async {
     setBusy(true);
@@ -45,7 +46,8 @@ class CreatePostViewModel extends BaseModel {
         place.photoURL,
         item,
         serviceFee,
-        price));
+        price,
+        deliveryTime));
 
     setBusy(false);
 
@@ -53,6 +55,8 @@ class CreatePostViewModel extends BaseModel {
         title: 'Post successfully Added',
         description: 'Your post has been created');
     _navigationService.pop();
+
+    print(deliveryTime);
   }
 
   void onSelected(PlaceViewModel place) {
