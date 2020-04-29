@@ -12,7 +12,7 @@ class FlutterStoreService {
   final storage = FlutterSecureStorage();
   final repo = new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
   final deliveryRepo =
-       new FuturePreferencesRepository<Delivery>(new JsonDeliveryDesSer());
+      new FuturePreferencesRepository<Delivery>(new JsonDeliveryDesSer());
 
   Future loginWithEmail(
       {@required String username, @required String password}) async {
