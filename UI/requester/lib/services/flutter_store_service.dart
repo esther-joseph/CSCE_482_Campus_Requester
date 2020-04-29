@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:requester/models/delivery.dart';
 import 'package:requester/models/order.dart';
 import 'package:requester/models/user.dart';
 import 'package:pref_dessert/pref_dessert.dart';
@@ -11,7 +12,7 @@ class FlutterStoreService {
   final storage = FlutterSecureStorage();
   final repo = new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
   final deliveryRepo =
-      new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
+      new FuturePreferencesRepository<Delivery>(new JsonDeliveryDesSer());
 
   Future loginWithEmail(
       {@required String username, @required String password}) async {
@@ -76,17 +77,26 @@ class FlutterStoreService {
   }
 
   void accepctOrder(Order order) async {
-    //   final List<Order> list = await repo.findAll();
-    //   for (int i = 0; i < list.length; i++) {
-    //     if (list[i].placeID == order.placeID) {
-    //       await repo.remove(i);
-    //     }
-    //   }
-    // }
-    deliveryRepo.save(order);
+    final List<Order> list = await repo.findAll();
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].placeID == order.placeID) {
+        await repo.remove(i);
+      }
+    }
+    Delivery delivery = Delivery(
+        order.userId,
+        order.name,
+        order.latitude,
+        order.longitude,
+        order.placeID,
+        order.photoURL,
+        order.item,
+        order.serviceFee,
+        order.price);
+    deliveryRepo.save(delivery);
   }
 
-  Future<List<Order>> getDeliveryList() async {
+  Future<List<Delivery>> getDeliveryList() async {
     return deliveryRepo.findAll();
   }
 }
