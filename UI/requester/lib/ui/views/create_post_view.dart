@@ -100,11 +100,12 @@ class _CreatePostViewState extends State<CreatePostView> {
                       elevation: 4.0,
                       onPressed: () {
                         DatePicker.showDateTimePicker(context,
-                            minTime: DateTime.now(),
+                            //currentTime: DateTime.now(),
+                            showTitleActions: true,
                             theme: DatePickerTheme(
                               containerHeight: 210.0,
                             ),
-                            showTitleActions: true, onConfirm: (time) {
+                            onConfirm: (time) {
                           _time =
                               'Day:${time.month}.${time.day} Time: ${time.hour}:${time.minute}';
                           setState(() {});
@@ -168,7 +169,8 @@ class _CreatePostViewState extends State<CreatePostView> {
                               item: itemController.text,
                               serviceFee: serviceFeeController.text,
                               price: priceController.text,
-                              place: model.selectedPosition);
+                              place: model.selectedPosition,
+                              deliveryTime: _time);
                         },
                         child: const Text('Create Post!',
                             style: TextStyle(fontSize: 20)),

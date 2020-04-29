@@ -54,7 +54,7 @@ class _AcceptOrderViewState extends State<AcceptOrderView> {
               ),
               TextField(
                 decoration: InputDecoration(
-                  labelText: "Delivery Time: ",
+                  labelText: orderToAccept.order.deliveryTime,
                 ),
                 enabled: false,
               ),

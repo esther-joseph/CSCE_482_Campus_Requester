@@ -33,6 +33,7 @@ class CreatePostViewModel extends BaseModel {
     @required String item,
     @required String serviceFee,
     @required PlaceViewModel place,
+    @required String deliveryTime,
     String price,
   }) async {
     setBusy(true);
@@ -46,7 +47,8 @@ class CreatePostViewModel extends BaseModel {
         place.photoURL,
         item,
         serviceFee,
-        price));
+        price,
+        deliveryTime));
 
     setBusy(false);
 

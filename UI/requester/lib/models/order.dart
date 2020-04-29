@@ -11,9 +11,10 @@ class Order {
   final String item;
   final String serviceFee;
   final String price;
+  final String deliveryTime;
 
   Order(this.userId, this.name, this.latitude, this.longitude, this.placeID,
-      this.photoURL, this.item, this.serviceFee, this.price);
+      this.photoURL, this.item, this.serviceFee, this.price, this.deliveryTime);
 }
 
 class JsonOrderDesSer extends DesSer<Order> {
@@ -29,7 +30,8 @@ class JsonOrderDesSer extends DesSer<Order> {
         map['photoURL'] as String,
         map['item'] as String,
         map['serviceFee'] as String,
-        map['price'] as String);
+        map['price'] as String,
+        map['deliveryTime'] as String);
   }
 
   @override
@@ -43,7 +45,8 @@ class JsonOrderDesSer extends DesSer<Order> {
       "photoURL": t.photoURL,
       "item": t.item,
       "serviceFee": t.serviceFee,
-      "price": t.price
+      "price": t.price,
+      "deliveryTime": t.deliveryTime
     };
     return json.encode(map);
   }
