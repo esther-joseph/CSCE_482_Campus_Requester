@@ -1,65 +1,83 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:requester/ui/widgets/now_delivery_list.dart';
-import 'package:requester/ui/widgets/past_delivery_list.dart';
-
-import '../widgets/bottom_navbar.dart';
+import 'package:intl/intl.dart';
+import 'package:provider_architecture/viewmodel_provider.dart';
+import 'package:requester/models/post.dart';
+import 'package:requester/ui/shared/ui_helpers.dart';
+import 'package:requester/viewmodels/delivery_list_view_model.dart';
+import 'package:requester/viewmodels/order_list_view_model.dart';
 
 class DeliveryListView extends StatefulWidget {
   @override
   _DeliveryListViewState createState() => _DeliveryListViewState();
 }
 
-class _DeliveryListViewState extends State<DeliveryListView> with SingleTickerProviderStateMixin {
-
-  TabController controller;
-
+class _DeliveryListViewState extends State<DeliveryListView> {
   @override
   void initState() {
     super.initState();
-    controller = new TabController(length: 2, vsync: this, initialIndex:0);
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle().copyWith(statusBarColor: Colors.green));
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff800000),
-        title: Text('Delivery List'),
-        actions: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(right: 15),
-            child: IconButton(
-              icon: Icon(Icons.person, color: Colors.white), 
-              onPressed: null
+    return ViewModelProvider<DeliveryListViewModel>.withConsumer(
+      viewModel: DeliveryListViewModel(),
+      onModelReady: (model) => model.init(),
+      builder: (context, model, child) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xff800000),
+            title: Text('Delivery List'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                verticalSpace(35),
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                      child: Image.asset('assets/images/title.png'),
+                    ),
+                  ],
+                ),
+                (model.deliveries != null)
+                    ? Expanded(
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                                  color: Colors.black,
+                                ),
+                            itemCount: model.deliveries.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  color: Colors.green,
+                                  padding: EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Column(children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Text("Item : " +
+                                                model.deliveries[index].item +
+                                                ", "),
+                                            Text("Service Fee : " +
+                                                model.deliveries[index]
+                                                    .serviceFee)
+                                          ],
+                                        ),
+                                        Text("From : " +
+                                            model.deliveries[index].name),
+                                      ])
+                                    ],
+                                  ));
+                            }))
+                    : Text('No deliveries')
+              ],
             ),
-          )
-        ],
-        leading: 
-          IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), 
-          onPressed: null
-          ),
-        bottom: TabBar(
-          indicator: UnderlineTabIndicator(
-            insets: EdgeInsets.symmetric(horizontal:16)
-          ),
-          controller: controller,
-          tabs: <Widget>[
-            Tab(text: 'Now'),
-            Tab(text: 'Past'),
-          ],
-        )
-      ),
-      body: TabBarView(
-        controller: controller,
-        children: <Widget>[
-          NowDeliveryList(),
-          PastDeliveryList(),
-        ]),
-        bottomNavigationBar: BottomNabar(),
+          )),
     );
   }
 }

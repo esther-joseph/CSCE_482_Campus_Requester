@@ -63,8 +63,6 @@ class _BottomNabarState extends State<BottomNabar> with ChangeNotifier {
           title: Text('Delivery'),
         ),
       ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
       onTap: _onItemTapped,
     );
   }

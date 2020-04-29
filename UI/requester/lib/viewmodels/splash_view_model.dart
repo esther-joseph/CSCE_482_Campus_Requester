@@ -15,7 +15,7 @@ class SplashViewModel extends BaseModel {
     var hasLoggedInUser = await _flutterStoreService.isUserLoggedIn();
 
     if (hasLoggedInUser) {
-      _navigationService.navigateTo(HomeViewRoute);
+      _navigationService.navigateTo(LoginViewRoute);
     } else {
       _navigationService.navigateTo(LoginViewRoute);
     }

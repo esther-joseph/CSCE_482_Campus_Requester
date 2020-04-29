@@ -34,14 +34,6 @@ class SignUpView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 38,
-                      ),
-                    ),
-                  ),
                   verticalSpaceLarge,
                   // TODO: Add additional user data here to save (episode 2)
                   InputField(

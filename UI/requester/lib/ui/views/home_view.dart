@@ -17,6 +17,11 @@ class _HomeViewState extends State<HomeView> {
         viewModel: HomeViewModel(),
         onModelReady: (model) => model.getPlaceMarkers(),
         builder: (context, model, child) => Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                backgroundColor: Color(0xff800000),
+                title: Text('Requests'),
+              ),
               body: Stack(
                 children: <Widget>[
                   GoogleMap(
