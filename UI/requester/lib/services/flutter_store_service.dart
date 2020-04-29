@@ -10,6 +10,8 @@ import 'package:pref_dessert/pref_dessert.dart';
 class FlutterStoreService {
   final storage = FlutterSecureStorage();
   final repo = new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
+  final deliveryRepo =
+      new FuturePreferencesRepository<Order>(new JsonOrderDesSer());
 
   Future loginWithEmail(
       {@required String username, @required String password}) async {
@@ -74,11 +76,17 @@ class FlutterStoreService {
   }
 
   void accepctOrder(Order order) async {
-    final List<Order> list = await repo.findAll();
-    for (int i = 0; i < list.length; i++) {
-      if (list[i].placeID == order.placeID) {
-        repo.remove(i);
-      }
-    }
+    //   final List<Order> list = await repo.findAll();
+    //   for (int i = 0; i < list.length; i++) {
+    //     if (list[i].placeID == order.placeID) {
+    //       await repo.remove(i);
+    //     }
+    //   }
+    // }
+    deliveryRepo.save(order);
+  }
+
+  Future<List<Order>> getDeliveryList() async {
+    return deliveryRepo.findAll();
   }
 }
