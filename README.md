@@ -1,4 +1,3 @@
-# CSCE_482_Campus_Requester
-A better app than favor could ever be - student edition
+# Pidgin: The Student-Driven Delivery Service App
 
-empty branch so you are forced to manually select the correct branch
+A mobile application to deliver goods and services for students by students for a fair price.
