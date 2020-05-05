@@ -3,7 +3,7 @@
 ## **Environment**
 sdk: ">=2.3.0 <3.0.0"
 
-## **Dependencies**
+## **Flutter Dependencies**
 
 http: ^0.12.0+2
 
