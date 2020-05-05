@@ -1,1 +1,0 @@
-this directory is for all the UI code (flutter)
